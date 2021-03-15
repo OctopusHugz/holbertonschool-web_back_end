@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 """This module works on duck types"""
 from typing import Iterable, List, Sequence, Tuple
 
