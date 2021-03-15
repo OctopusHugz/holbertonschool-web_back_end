@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 """This module is working on duck typing"""
 from typing import Any, Sequence, Union
 
