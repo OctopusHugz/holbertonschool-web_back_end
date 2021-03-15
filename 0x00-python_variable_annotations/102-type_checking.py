@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 """This module focuses on using mypy"""
-from typing import Tuple
+from typing import List, Tuple
 
 
-def zoom_array(lst: Tuple, factor: int = 2) -> Tuple:
+def zoom_array(lst: Tuple, factor: int = 2) -> List:
     """This function returns zoomed tuple"""
-    zoomed_in: Tuple = [
+    zoomed_in: Tuple = (
         item for item in lst
         for i in range(factor)
-    ]
+    )
     return zoomed_in
 
 
