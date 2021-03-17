@@ -5,7 +5,7 @@ import random
 from typing import AsyncGenerator
 
 
-async def async_generator() -> AsyncGenerator[float, None]:
+async def async_generator() -> AsyncGenerator[float]:
     """This function creates an async generator"""
     for _ in range(10):
         await asyncio.sleep(1)
