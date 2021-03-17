@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 """This module handles the basics of async comprehension"""
-import asyncio
-import random
 async_generator = __import__('0-async_generator').async_generator
 
 
