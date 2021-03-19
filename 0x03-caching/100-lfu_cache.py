@@ -20,19 +20,20 @@ class LFUCache(BaseCaching):
                 self.counted_cache_data[key] += 1
             self.timed_cache_data[key] = datetime.now().strftime(
                 "%m/%d/%Y %H:%M:%S:%f")
-            print(self.counted_cache_data)
-            lowest_count = min(self.counted_cache_data.values())
-            least_used_count = list(self.counted_cache_data.values()).count(lowest_count)
             if len(self.cache_data) > self.MAX_ITEMS:
+                # lowest_count = min(self.counted_cache_data, key=lambda k: self.counted_cache_data[k])
+                lowest_count = min(self.counted_cache_data.values())
+                if lowest_count == 1 and self.counted_cache_data[key] == 1:
+                    lowest_list = sorted(list(self.counted_cache_data.values()))
+                    lowest_list.pop(0)
+                    lowest_count = lowest_list[0]
+                least_used_count = list(self.counted_cache_data.values()).count(lowest_count)
                 if least_used_count > 1:
                     self.least_frequent_keys = {}
                     for keys, vals in self.counted_cache_data.copy().items():
                         if vals == lowest_count:
                             self.least_frequent_keys[keys] = self.timed_cache_data.get(keys)
-                    # Need to determine LRU of each key in least_frequent_keys
-                    print(self.least_frequent_keys)
                     lfru_key = min(self.least_frequent_keys)
-                    # print(lfru_key)
                     del self.cache_data[lfru_key]
                     del self.timed_cache_data[lfru_key]
                     del self.counted_cache_data[lfru_key]
