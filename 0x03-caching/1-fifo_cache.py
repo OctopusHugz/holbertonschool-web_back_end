@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""This module implements a basic cache"""
+"""This module implements a FIFO cache"""
 from base_caching import BaseCaching
 
 
