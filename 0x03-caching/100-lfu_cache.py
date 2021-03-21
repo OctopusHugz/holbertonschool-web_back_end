@@ -21,6 +21,7 @@ class LFUCache(BaseCaching):
                 self.ccd[key] = 1
             else:
                 self.ccd[key] += 1
+            # print(self.ccd)
             self.tcd[key] = datetime.now().strftime("%m/%d/%Y %H:%M:%S:%f")
             if len(self.cache_data) > self.MAX_ITEMS:
                 lowest_count = min(self.ccd.values())
@@ -28,22 +29,21 @@ class LFUCache(BaseCaching):
                     lowest_list = sorted(list(self.ccd.values()))
                     lowest_list.pop(0)
                     lowest_count = lowest_list[0]
+                # print(f"lowest_count is {lowest_count}")
                 self.lfk = {}
                 for keys, vals in self.ccd.copy().items():
                     if vals == lowest_count:
                         self.lfk[keys] = self.tcd.get(keys)
-                lfru_key = min(self.lfk)
+                # print(self.lfk)
+                min_value = min(self.lfk.values())
+                for k, v in self.lfk.items():
+                    if v == min_value:
+                        lfru_key = k
+                        break
                 del self.cache_data[lfru_key]
                 del self.tcd[lfru_key]
                 del self.ccd[lfru_key]
                 print(f"DISCARD: {lfru_key}")
-                # else:
-                #     for k, v in self.ccd.copy().items():
-                #         if v == lowest_count:
-                #             del self.cache_data[k]
-                #             del self.tcd[k]
-                #             del self.ccd[k]
-                #             print(f"DISCARD: {k}")
 
     def get(self, key):
         """ Gets key from cache dictionary if it exists """
