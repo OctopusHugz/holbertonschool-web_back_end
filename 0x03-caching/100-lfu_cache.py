@@ -8,7 +8,7 @@ class LFUCache(BaseCaching):
     """ LFU cache system """
     timed_cache_data = {}
     counted_cache_data = {}
-    least_frequent_keys = {}
+    lfks = {}
 
     def put(self, key, item):
         """ Puts key and item in cache dictionary """
@@ -30,12 +30,11 @@ class LFUCache(BaseCaching):
                 least_used_count = list(self.counted_cache_data.values()
                                         ).count(lowest_count)
                 if least_used_count > 1:
-                    self.least_frequent_keys = {}
+                    self.lfks = {}
                     for keys, vals in self.counted_cache_data.copy().items():
                         if vals == lowest_count:
-                            self.least_frequent_keys
-                            [keys] = self.timed_cache_data.get(keys)
-                    lfru_key = min(self.least_frequent_keys)
+                            self.lfks[keys] = self.timed_cache_data.get(keys)
+                    lfru_key = min(self.lfks)
                     del self.cache_data[lfru_key]
                     del self.timed_cache_data[lfru_key]
                     del self.counted_cache_data[lfru_key]
