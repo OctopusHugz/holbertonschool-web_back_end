@@ -21,7 +21,6 @@ class LFUCache(BaseCaching):
                 self.ccd[key] = 1
             else:
                 self.ccd[key] += 1
-            # print(self.ccd)
             self.tcd[key] = datetime.now().strftime("%m/%d/%Y %H:%M:%S:%f")
             if len(self.cache_data) > self.MAX_ITEMS:
                 lowest_count = min(self.ccd.values())
@@ -29,12 +28,10 @@ class LFUCache(BaseCaching):
                     lowest_list = sorted(list(self.ccd.values()))
                     lowest_list.pop(0)
                     lowest_count = lowest_list[0]
-                # print(f"lowest_count is {lowest_count}")
                 self.lfk = {}
                 for keys, vals in self.ccd.copy().items():
                     if vals == lowest_count:
                         self.lfk[keys] = self.tcd.get(keys)
-                # print(self.lfk)
                 min_value = min(self.lfk.values())
                 for k, v in self.lfk.items():
                     if v == min_value:
