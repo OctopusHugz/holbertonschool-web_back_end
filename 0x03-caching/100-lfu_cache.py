@@ -28,24 +28,22 @@ class LFUCache(BaseCaching):
                     lowest_list = sorted(list(self.ccd.values()))
                     lowest_list.pop(0)
                     lowest_count = lowest_list[0]
-                least_used_count = list(self.ccd.values()).count(lowest_count)
-                if least_used_count > 1:
-                    self.lfk = {}
-                    for keys, vals in self.ccd.copy().items():
-                        if vals == lowest_count:
-                            self.lfk[keys] = self.tcd.get(keys)
-                    lfru_key = min(self.lfk)
-                    del self.cache_data[lfru_key]
-                    del self.tcd[lfru_key]
-                    del self.ccd[lfru_key]
-                    print(f"DISCARD: {lfru_key}")
-                else:
-                    for k, v in self.ccd.copy().items():
-                        if v == lowest_count:
-                            del self.cache_data[k]
-                            del self.tcd[k]
-                            del self.ccd[k]
-                            print(f"DISCARD: {k}")
+                self.lfk = {}
+                for keys, vals in self.ccd.copy().items():
+                    if vals == lowest_count:
+                        self.lfk[keys] = self.tcd.get(keys)
+                lfru_key = min(self.lfk)
+                del self.cache_data[lfru_key]
+                del self.tcd[lfru_key]
+                del self.ccd[lfru_key]
+                print(f"DISCARD: {lfru_key}")
+                # else:
+                #     for k, v in self.ccd.copy().items():
+                #         if v == lowest_count:
+                #             del self.cache_data[k]
+                #             del self.tcd[k]
+                #             del self.ccd[k]
+                #             print(f"DISCARD: {k}")
 
     def get(self, key):
         """ Gets key from cache dictionary if it exists """
