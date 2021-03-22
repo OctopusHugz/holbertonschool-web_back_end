@@ -2,6 +2,7 @@
 """This module implements a LFU cache"""
 from base_caching import BaseCaching
 from datetime import datetime
+now = datetime.now()
 
 
 class LFUCache(BaseCaching):
@@ -16,18 +17,13 @@ class LFUCache(BaseCaching):
     def put(self, key, item):
         """ Puts key and item in cache dictionary """
         if key is not None and item is not None:
-            self.cache_data[key] = item
-            if self.ccd.get(key) is None:
-                self.ccd[key] = 1
-            else:
-                self.ccd[key] += 1
-            self.tcd[key] = datetime.now().strftime("%m/%d/%Y %H:%M:%S:%f")
-            if len(self.cache_data) > self.MAX_ITEMS:
+            if len(self.cache_data) == self.MAX_ITEMS:
                 lowest_count = min(self.ccd.values())
-                if lowest_count == 1 and self.ccd[key] == 1:
-                    lowest_list = sorted(list(self.ccd.values()))
-                    lowest_list.pop(0)
-                    lowest_count = lowest_list[0]
+                if self.ccd.get(key) == lowest_count:
+                    self.cache_data[key] = item
+                    self.ccd[key] += 1
+                    self.tcd[key] = now.strftime("%m/%d/%Y %H:%M:%S:%f")
+                    return
                 self.lfk = {}
                 for keys, vals in self.ccd.copy().items():
                     if vals == lowest_count:
@@ -42,6 +38,13 @@ class LFUCache(BaseCaching):
                 del self.ccd[lfru_key]
                 print(f"DISCARD: {lfru_key}")
 
+            self.cache_data[key] = item
+            if self.ccd.get(key) is None:
+                self.ccd[key] = 1
+            else:
+                self.ccd[key] += 1
+            self.tcd[key] = now.strftime("%m/%d/%Y %H:%M:%S:%f")
+
     def get(self, key):
         """ Gets key from cache dictionary if it exists """
         value = self.cache_data.get(key)
@@ -50,5 +53,5 @@ class LFUCache(BaseCaching):
                 self.ccd[key] = 1
             else:
                 self.ccd[key] += 1
-            self.tcd[key] = datetime.now().strftime("%m/%d/%Y %H:%M:%S:%f")
+            self.tcd[key] = now.strftime("%m/%d/%Y %H:%M:%S:%f")
         return value
