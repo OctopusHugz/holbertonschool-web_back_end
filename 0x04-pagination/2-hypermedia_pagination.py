@@ -38,18 +38,13 @@ class Server:
 
     def get_hyper(self, page: int = 1, page_size: int = 10) -> dict:
         """ Gets the correct page from the dataset and returns dictionary """
-        hyper_dict = {}
+        hyper_dict: dict = {}
         assert isinstance(page, int) and page > 0
         assert isinstance(page_size, int) and page_size > 0
-        # self.dataset()
-        # index_tuple: Tuple = index_range(page, page_size)
-        # start_index: int = index_tuple[0]
-        # end_index: int = index_tuple[1]
-        page_result = self.get_page(page, page_size)
+        page_result: List[List] = self.get_page(page, page_size)
         hyper_dict["page_size"] = len(page_result)
         hyper_dict["page"] = page
         hyper_dict["data"] = page_result
-        print(len(self.__dataset))
         if (page + 1) * page_size <= len(self.__dataset):
             hyper_dict["next_page"] = page + 1
         else:
