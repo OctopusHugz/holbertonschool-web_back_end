@@ -40,3 +40,4 @@ def get_logger() -> logging.Logger:
     new_logger.setLevel(20)
     new_logger.propagate = False
     new_logger.addHandler(RedactingFormatter)
+    return new_logger
