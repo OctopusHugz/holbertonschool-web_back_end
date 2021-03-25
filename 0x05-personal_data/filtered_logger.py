@@ -3,6 +3,7 @@
 from typing import List, Tuple
 import re
 import logging
+PII_FIELDS = ("name", "email", "phone", "ssn", "password")
 
 
 class RedactingFormatter(logging.Formatter):
@@ -31,3 +32,11 @@ def filter_datum(fields: List[str], redaction: str, message: str,
     """ Returns the log message obfuscated """
     return [message := re.sub(f"(?<={field}=).*?(?={separator})", redaction,
                               message) for field in fields][-1]
+
+
+def get_logger() -> logging.Logger:
+    """ Returns a Logger object """
+    new_logger = logging.getLogger("user_data")
+    new_logger.setLevel(20)
+    new_logger.propagate = False
+    new_logger.addHandler(RedactingFormatter)
