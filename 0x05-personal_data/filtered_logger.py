@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 """ This module creates a filter_datum function """
 from typing import List, Tuple
-import re
 import logging
+import mysql.connector
+import os
+import re
 PII_FIELDS = ("name", "email", "phone", "ssn", "password")
 
 
@@ -41,3 +43,20 @@ def get_logger() -> logging.Logger:
     new_logger.propagate = False
     new_logger.addHandler(logging.StreamHandler(RedactingFormatter))
     return new_logger
+
+
+def get_db() -> mysql.connector.connect:
+    """ Returns a connector to the holberton database """
+    user_name = os.getenv("PERSONAL_DATA_DB_USERNAME")
+    if not user_name:
+        user_name = "root"
+    password = os.getenv("PERSONAL_DATA_DB_PASSWORD")
+    if not password:
+        password = ""
+    host = os.getenv("PERSONAL_DATA_DB_HOST")
+    if not host:
+        host = "localhost"
+    db_name = os.getenv("PERSONAL_DATA_DB_NAME")
+    cnx = mysql.connector.connect(
+        user=user_name, password=password, host=host, database=db_name)
+    return cnx
