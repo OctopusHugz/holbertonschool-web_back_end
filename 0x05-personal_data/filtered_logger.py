@@ -37,7 +37,7 @@ def filter_datum(fields: List[str], redaction: str, message: str,
 def get_logger() -> logging.Logger:
     """ Returns a Logger object """
     new_logger = logging.getLogger("user_data")
-    new_logger.setLevel(20)
+    new_logger.setLevel(logging.INFO)
     new_logger.propagate = False
-    new_logger.addHandler(RedactingFormatter)
+    new_logger.addHandler(logging.StreamHandler(RedactingFormatter))
     return new_logger
