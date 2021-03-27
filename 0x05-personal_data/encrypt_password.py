@@ -5,4 +5,6 @@ from bcrypt import gensalt, hashpw
 
 def hash_password(password: str) -> bytes:
     """ Hashes a password given as argument using hashpw with a random salt"""
-    return hashpw(password.encode(), gensalt())
+    if not isinstance(password, bytes):
+        password = password.encode()
+    return hashpw(password, gensalt())
