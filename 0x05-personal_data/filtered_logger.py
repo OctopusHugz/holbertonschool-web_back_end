@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """ This module creates a filter_datum function """
-from typing import List, Tuple
+from typing import List
 import logging
 import mysql.connector
 import os
@@ -45,7 +45,7 @@ def get_logger() -> logging.Logger:
     new_logger.propagate = False
     ch = logging.StreamHandler()
     ch.setLevel(logging.ERROR)
-    ch.setFormatter(RedactingFormatter(PII_FIELDS))
+    ch.setFormatter(RedactingFormatter(list(PII_FIELDS)))
     new_logger.addHandler(ch)
     return new_logger
 
