@@ -49,7 +49,7 @@ def get_logger() -> logging.Logger:
     return new_logger
 
 
-def get_db() -> mysql.connector.connect:
+def get_db() -> mysql.connector.connection.MySQLConnection:
     """ Returns a connector to the holberton database """
     user_name = os.getenv("PERSONAL_DATA_DB_USERNAME")
     if not user_name:
