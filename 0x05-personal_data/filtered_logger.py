@@ -32,31 +32,52 @@ class RedactingFormatter(logging.Formatter):
 def filter_datum(fields: List[str], redaction: str, message: str,
                  separator: str) -> str:
     """ Returns the log message obfuscated """
-    return [message := re.sub(f"(?<={field}=).*?(?={separator})", redaction,
-                              message) for field in fields][-1]
+    for field in fields:
+        message = re.sub(
+            f"(?<={field}=).*?(?={separator})", redaction, message)
+    return message
 
 
-def get_logger() -> logging.Logger:
-    """ Returns a Logger object """
-    new_logger = logging.getLogger("user_data")
-    new_logger.setLevel(logging.INFO)
-    new_logger.propagate = False
-    new_logger.addHandler(logging.StreamHandler(RedactingFormatter))
-    return new_logger
+# def get_logger() -> logging.Logger:
+#     """ Returns a Logger object """
+#     new_logger = logging.getLogger("user_data")
+#     new_logger.setLevel(logging.INFO)
+#     new_logger.propagate = False
+#     new_logger.addHandler(
+#         logging.StreamHandler.setFormatter(RedactingFormatter))
+#     return new_logger
 
 
-def get_db() -> mysql.connector.connect:
-    """ Returns a connector to the holberton database """
-    user_name = os.getenv("PERSONAL_DATA_DB_USERNAME")
-    if not user_name:
-        user_name = "root"
-    password = os.getenv("PERSONAL_DATA_DB_PASSWORD")
-    if not password:
-        password = ""
-    host = os.getenv("PERSONAL_DATA_DB_HOST")
-    if not host:
-        host = "localhost"
-    db_name = os.getenv("PERSONAL_DATA_DB_NAME")
-    cnx = mysql.connector.connect(
-        user=user_name, password=password, host=host, database=db_name)
-    return cnx
+# def get_db() -> mysql.connector.connect:
+#     """ Returns a connector to the holberton database """
+#     user_name = os.getenv("PERSONAL_DATA_DB_USERNAME")
+#     if not user_name:
+#         user_name = "root"
+#     password = os.getenv("PERSONAL_DATA_DB_PASSWORD")
+#     if not password:
+#         password = ""
+#     host = os.getenv("PERSONAL_DATA_DB_HOST")
+#     if not host:
+#         host = "localhost"
+#     db_name = os.getenv("PERSONAL_DATA_DB_NAME")
+#     cnx = mysql.connector.connect(
+#         user=user_name, password=password, host=host, database=db_name)
+#     return cnx
+
+
+# def main():
+#     """ Obtain a database connection and retrieve all rows from users table """
+#     db = get_db()
+#     cursor = db.cursor()
+#     cursor.execute("SELECT * FROM users")
+#     # new_logger = get_logger()
+#     # print(new_logger)
+#     # new_logger.makeRecord(new_logger)
+#     for row in cursor:
+#         print(filter_datum(list(PII_FIELDS), RedactingFormatter.REDACTION,
+#                            str(row), ","))
+#     cursor.close()
+#     db.close()
+
+
+# main()
