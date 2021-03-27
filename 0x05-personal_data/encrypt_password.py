@@ -3,6 +3,6 @@
 from bcrypt import gensalt, hashpw
 
 
-def hash_password(password: str):
+def hash_password(password: str) -> bytes:
     """ Hashes a password given as argument using hashpw with a random salt"""
     return hashpw(password.encode(), gensalt())
