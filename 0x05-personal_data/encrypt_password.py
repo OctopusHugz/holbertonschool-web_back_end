@@ -5,9 +5,9 @@ from bcrypt import gensalt, hashpw, checkpw
 
 def hash_password(password: str) -> bytes:
     """ Hashes a password given as argument using hashpw with a random salt"""
-    return hashpw(password.encode(), gensalt())
+    return hashpw(password.encode("ascii", "replace"), gensalt())
 
 
 def is_valid(hashed_password: bytes, password: str) -> bool:
     """ Checks whether a hashed password matches a non-hashed password """
-    return checkpw(password.encode(), hashed_password)
+    return checkpw(password.encode("ascii", "replace"), hashed_password)
