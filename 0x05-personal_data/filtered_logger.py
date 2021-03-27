@@ -17,10 +17,12 @@ class RedactingFormatter(logging.Formatter):
     SEPARATOR = ";"
 
     def __init__(self, fields: List[str]) -> None:
+        """ Creates an instance of RedactingFormatter class """
         super(RedactingFormatter, self).__init__(self.FORMAT)
         self.fields = list(fields)
 
     def format(self, record: logging.LogRecord) -> str:
+        """ Formats the record into specified self.FORMAT """
         return filter_datum(
             self.fields, self.REDACTION, super().format(record),
             self.SEPARATOR)
