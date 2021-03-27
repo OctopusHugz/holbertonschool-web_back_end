@@ -38,14 +38,16 @@ def filter_datum(fields: List[str], redaction: str, message: str,
     return message
 
 
-# def get_logger() -> logging.Logger:
-#     """ Returns a Logger object """
-#     new_logger = logging.getLogger("user_data")
-#     new_logger.setLevel(logging.INFO)
-#     new_logger.propagate = False
-#     new_logger.addHandler(
-#         logging.StreamHandler.setFormatter(RedactingFormatter))
-#     return new_logger
+def get_logger() -> logging.Logger:
+    """ Returns a Logger object """
+    new_logger = logging.getLogger("user_data")
+    new_logger.setLevel(logging.INFO)
+    new_logger.propagate = False
+    ch = logging.StreamHandler()
+    ch.setLevel(logging.ERROR)
+    ch.setFormatter(RedactingFormatter(PII_FIELDS))
+    new_logger.addHandler(ch)
+    return new_logger
 
 
 # def get_db() -> mysql.connector.connect:
