@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 """ This module creates a filter_datum function """
-from time import strftime
 from typing import List
-from datetime import date, datetime
+from datetime import datetime
 import logging
 import mysql.connector
 import os
@@ -82,6 +81,8 @@ def main():
                 kv_string = k + "=" + v + ";"
             else:
                 kv_string = k + "=" + v.strftime("%Y-%m-%d %H:%M:%S") + ";"
+            if k != 'user_agent':
+                kv_string += " "
             log_message += kv_string
         new_lr = logging.LogRecord(
             "user_data", logging.INFO, None, None, log_message, None, None)
