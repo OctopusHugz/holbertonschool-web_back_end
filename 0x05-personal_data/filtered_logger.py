@@ -66,7 +66,7 @@ def filter_datum(fields: List[str], redaction: str, message: str,
 
 
 # def main():
-#     """ Obtain a database connection and retrieve all rows from users table """
+#     """Obtain a database connection and retrieve all rows from users table"""
 #     db = get_db()
 #     cursor = db.cursor()
 #     cursor.execute("SELECT * FROM users")
