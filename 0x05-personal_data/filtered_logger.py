@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """ This module creates a filter_datum function """
+from time import strftime
 from typing import List
+from datetime import date, datetime
 import logging
 import mysql.connector
 import os
@@ -66,19 +68,28 @@ def get_db() -> mysql.connector.connection.MySQLConnection:
     return cnx
 
 
-# def main():
-#     """Obtain a database connection and retrieve all rows from users table"""
-#     db = get_db()
-#     cursor = db.cursor()
-#     cursor.execute("SELECT * FROM users")
-#     # new_logger = get_logger()
-#     # print(new_logger)
-#     # new_logger.makeRecord(new_logger)
-#     for row in cursor:
-#         print(filter_datum(list(PII_FIELDS), RedactingFormatter.REDACTION,
-#                            str(row), ","))
-#     cursor.close()
-#     db.close()
+def main():
+    """Obtain a database connection and retrieve all rows from users table"""
+    formatter = RedactingFormatter(PII_FIELDS)
+    db = get_db()
+    cursor = db.cursor(dictionary=True)
+    cursor.execute("SELECT * FROM users")
+    ud_logger = get_logger()
+    for row_dict in cursor:
+        log_message = ""
+        for k, v in row_dict.items():
+            if not isinstance(v, datetime):
+                kv_string = k + "=" + v + ";"
+            else:
+                kv_string = k + "=" + v.strftime("%Y-%m-%d %H:%M:%S") + ";"
+            log_message += kv_string
+        new_lr = logging.LogRecord(
+            "user_data", logging.INFO, None, None, log_message, None, None)
+        ud_logger.handle(new_lr)
+        print(formatter.format(new_lr))
+    cursor.close()
+    db.close()
 
 
-# main()
+if __name__ == "__main__":
+    main()
