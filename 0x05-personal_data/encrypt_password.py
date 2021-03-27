@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """ This module handles encrypting passwords using bcrypt and hashpw """
-from bcrypt import gensalt, hashpw, checkpw
+from bcrypt import checkpw, gensalt, hashpw,
 
 
 def hash_password(password: str) -> bytes:
