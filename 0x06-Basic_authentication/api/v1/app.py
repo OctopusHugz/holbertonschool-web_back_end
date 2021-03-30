@@ -18,6 +18,8 @@ auth_type = os.getenv('AUTH_TYPE')
 if auth_type == 'auth':
     from api.v1.auth.auth import Auth
     auth = Auth()
+excluded_paths = ['/api/v1/status/',
+                  '/api/v1/unauthorized/', '/api/v1/forbidden/']
 
 
 @app.errorhandler(401)
@@ -42,16 +44,11 @@ def not_found(error) -> str:
 @app.before_request
 def before_request_func() -> Dict:
     """ Before request handler """
-    if auth is None:
-        pass
-    elif not auth.require_auth(request.path,
-                               ['/api/v1/status/', '/api/v1/unauthorized/',
-                                '/api/v1/forbidden/']):
-        pass
-    elif auth.authorization_header(request) is None:
-        abort(401)
-    elif auth.current_user(request) is None:
-        abort(403)
+    if auth and auth.require_auth(request.path, excluded_paths):
+        if auth.authorization_header(request) is None:
+            abort(401)
+        elif auth.current_user(request) is None:
+            abort(403)
 
 
 if __name__ == "__main__":
