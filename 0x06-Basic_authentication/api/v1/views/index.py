@@ -27,9 +27,18 @@ def stats() -> str:
 
 
 @app_views.route('/unauthorized', methods=['GET'], strict_slashes=False)
-def unauthorized() -> str:
+def unauthorized_tester() -> str:
     """ GET /api/v1/unauthorized
     Return:
       - 401 status code with error JSON
     """
     abort(401)
+
+
+@app_views.route('/forbidden', methods=['GET'], strict_slashes=False)
+def forbidden_tester() -> str:
+    """ GET /api/v1/unauthorized
+    Return:
+      - 401 status code with error JSON
+    """
+    abort(403)
