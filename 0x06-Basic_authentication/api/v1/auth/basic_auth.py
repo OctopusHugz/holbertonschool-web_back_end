@@ -61,13 +61,13 @@ class BasicAuth(Auth):
             return None
         elif User.count() == 0 or not User.search({"email": user_email}):
             return None
-        # instead of making my_user the first element, search entire list
-        # EDGE CASE: duplicate emails with only 1 correct password
-        my_users = User.search({"email": user_email})
-        for user in my_users:
-            if user.is_valid_password(user_pwd):
-                return user
-        return None
+        user_list = User.search({"email": user_email})
+        if user_list:
+            my_user = user_list[0]
+        if my_user.is_valid_password(user_pwd):
+            return my_user
+        else:
+            return None
 
     def current_user(self, request=None) -> TypeVar('User'):
         """ Overloads Auth and retrieves the User instance for a request """
