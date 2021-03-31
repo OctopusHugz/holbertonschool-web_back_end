@@ -3,6 +3,7 @@
 from typing import Tuple, TypeVar
 from api.v1.auth.auth import Auth
 from models.user import User
+from models.base import DATA
 import base64
 
 
@@ -58,9 +59,7 @@ class BasicAuth(Auth):
             return None
         elif user_pwd is None or not isinstance(user_pwd, str):
             return None
-        # elif User.count() == 0:
-        #     return None
-        elif len(User.all()) == 0:
+        elif not DATA.get("User"):
             return None
         user_list = User.search({"email": user_email})
         for user in user_list:
