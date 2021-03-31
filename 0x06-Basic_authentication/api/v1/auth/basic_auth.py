@@ -2,7 +2,6 @@
 """ This module implements the BasicAuth class """
 from typing import Tuple, TypeVar
 from api.v1.auth.auth import Auth
-from models.base import DATA
 from models.user import User
 import base64
 
@@ -59,13 +58,13 @@ class BasicAuth(Auth):
             return None
         elif user_pwd is None or not isinstance(user_pwd, str):
             return None
-        if User.count() == 0 or len(User.search({"email": user_email})) == 0:
+        elif User.count() == 0:
             return None
-        my_user = User.search({"email": user_email})[0]
-        if my_user.is_valid_password(user_pwd):
-            return my_user
-        else:
-            return None
+        user_list = User.search({"email": user_email})
+        for user in user_list:
+            if user.is_valid_password(user_pwd):
+                return user
+        return None
 
     def current_user(self, request=None) -> TypeVar('User'):
         """ Overloads Auth and retrieves the User instance for a request """
