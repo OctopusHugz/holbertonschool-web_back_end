@@ -60,6 +60,8 @@ class BasicAuth(Auth):
             return None
         # elif User.count() == 0:
         #     return None
+        elif len(User.all() == 0):
+            return None
         user_list = User.search({"email": user_email})
         for user in user_list:
             if user.is_valid_password(user_pwd):
