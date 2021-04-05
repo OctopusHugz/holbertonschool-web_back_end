@@ -46,14 +46,3 @@ class SessionExpAuth(SessionAuth):
         if expiration_date < datetime.now():
             return None
         return session_dict.get("user_id")
-
-    # def current_user(self, request=None):
-    #     """ Returns a User instance based on a cookie value """
-    #     session_id = self.session_cookie(request)
-    #     user_id = self.user_id_for_session_id(session_id)
-    #     # print(f"session_id is: {session_id}")
-    #     # session_dict = self.user_id_by_session_id.get(session_id)
-    #     # print(f"session_dict is: {session_dict}")
-    #     # user_id = session_dict.get("user_id")
-    #     print(f"user_id is: {user_id}")
-    #     return User.get(user_id)
