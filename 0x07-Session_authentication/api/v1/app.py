@@ -25,7 +25,8 @@ elif auth_type == 'session_auth':
     from api.v1.auth.session_auth import SessionAuth
     auth = SessionAuth()
 excluded_paths = ['/api/v1/status/',
-                  '/api/v1/unauthorized/', '/api/v1/forbidden/']
+                  '/api/v1/unauthorized/', '/api/v1/forbidden/',
+                  '/api/v1/auth_session/login/']
 
 
 @app.errorhandler(401)
@@ -51,7 +52,8 @@ def not_found(error) -> str:
 def before_request_func() -> Dict:
     """ Before request handler """
     if auth and auth.require_auth(request.path, excluded_paths):
-        if auth.authorization_header(request) is None:
+        if auth.authorization_header(request) is None and auth.session_cookie(
+                request) is None:
             abort(401)
         cu_auth_result = auth.current_user(request)
         if cu_auth_result is None:
