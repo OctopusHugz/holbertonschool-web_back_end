@@ -27,6 +27,9 @@ elif auth_type == 'session_auth':
 elif auth_type == 'session_exp_auth':
     from api.v1.auth.session_exp_auth import SessionExpAuth
     auth = SessionExpAuth()
+elif auth_type == 'session_db_auth':
+    from api.v1.auth.session_db_auth import SessionDBAuth
+    auth = SessionDBAuth()
 excluded_paths = ['/api/v1/status/',
                   '/api/v1/unauthorized/', '/api/v1/forbidden/',
                   '/api/v1/auth_session/login/']
