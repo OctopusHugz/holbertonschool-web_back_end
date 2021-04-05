@@ -50,8 +50,10 @@ def before_request_func() -> Dict:
     if auth and auth.require_auth(request.path, excluded_paths):
         if auth.authorization_header(request) is None:
             abort(401)
-        elif auth.current_user(request) is None:
+        cu_auth_result = auth.current_user(request)
+        if cu_auth_result is None:
             abort(403)
+        request.current_user = cu_auth_result
 
 
 if __name__ == "__main__":
