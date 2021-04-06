@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 """ This module implements the SessionDBAuth class """
-from typing import Union
 from models.base import DATA
 from models.user_session import UserSession
 from api.v1.auth.session_exp_auth import SessionExpAuth
@@ -18,7 +17,7 @@ class SessionDBAuth(SessionExpAuth):
         new_user_session.save()
         return session_id
 
-    def user_id_for_session_id(self, session_id=None) -> Union[]:
+    def user_id_for_session_id(self, session_id=None):
         """ Returns a user_id from a session_id """
         if DATA.get("UserSession") is None:
             return None
