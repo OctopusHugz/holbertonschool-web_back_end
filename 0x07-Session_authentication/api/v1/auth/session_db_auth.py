@@ -36,9 +36,7 @@ class SessionDBAuth(SessionExpAuth):
         session_id = self.session_cookie(request)
         if session_id is None:
             return False
-        UserSession.load_from_file()
-        # if not DATA.get("UserSession"):
-        #     return False
+        # UserSession.load_from_file()
         destroy_list = UserSession.search({"session_id": session_id})
         if len(destroy_list) > 0:
             session_to_destroy = destroy_list[0]
