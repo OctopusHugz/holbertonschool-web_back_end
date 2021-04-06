@@ -20,13 +20,12 @@ class SessionDBAuth(SessionExpAuth):
 
     def user_id_for_session_id(self, session_id=None) -> Union[str, None]:
         """ Returns a user_id from a session_id """
-        UserSession.load_from_file()
-        # if not DATA.get("UserSession"):
-        #     return None
+        # UserSession.load_from_file()
         user_session_list = UserSession.search({"session_id": session_id})
         if len(user_session_list) > 0:
-            user_session = user_session_list[0]
-            return user_session.user_id
+            for user_session in user_session_list:
+                if user_session.session_id == session_id:
+                    return user_session.user_id
         return None
 
     def destroy_session(self, request=None) -> bool:
@@ -36,9 +35,9 @@ class SessionDBAuth(SessionExpAuth):
         session_id = self.session_cookie(request)
         if session_id is None:
             return False
-        # UserSession.load_from_file()
         destroy_list = UserSession.search({"session_id": session_id})
         if len(destroy_list) > 0:
-            session_to_destroy = destroy_list[0]
-            session_to_destroy.remove()
+            for user_session in destroy_list:
+                if user_session.session_id == session_id:
+                    user_session.remove()
         return True
