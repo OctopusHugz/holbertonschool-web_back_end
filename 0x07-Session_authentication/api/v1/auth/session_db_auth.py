@@ -21,8 +21,8 @@ class SessionDBAuth(SessionExpAuth):
     def user_id_for_session_id(self, session_id=None) -> Union[str, None]:
         """ Returns a user_id from a session_id """
         UserSession.load_from_file()
-        if not DATA.get("UserSession"):
-            return None
+        # if not DATA.get("UserSession"):
+        #     return None
         user_session_list = UserSession.search({"session_id": session_id})
         if len(user_session_list) > 0:
             user_session = user_session_list[0]
@@ -37,11 +37,10 @@ class SessionDBAuth(SessionExpAuth):
         if session_id is None:
             return False
         UserSession.load_from_file()
-        if not DATA.get("UserSession"):
-            return False
+        # if not DATA.get("UserSession"):
+        #     return False
         destroy_list = UserSession.search({"session_id": session_id})
         if len(destroy_list) > 0:
             session_to_destroy = destroy_list[0]
             session_to_destroy.remove()
-            return True
-        return False
+        return True
