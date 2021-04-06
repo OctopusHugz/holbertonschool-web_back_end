@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """ This module implements the SessionDBAuth class """
+from datetime import datetime, timedelta
 from models.base import DATA
 from typing import Union
 from models.user_session import UserSession
@@ -11,14 +12,12 @@ class SessionDBAuth(SessionExpAuth):
 
     def create_session(self, user_id=None) -> Union[str, None]:
         """ Creates a session for a user_id """
+        if user_id is None:
+            return None
         session_id = super().create_session(user_id)
         if session_id is None:
             return None
-        if user_id is not None:
-            new_user_session = UserSession(session_id=session_id,
-                                           user_id=user_id)
-        else:
-            new_user_session = UserSession(session_id=session_id)
+        new_user_session = UserSession(session_id=session_id, user_id=user_id)
         new_user_session.save()
         return session_id
 
@@ -28,9 +27,16 @@ class SessionDBAuth(SessionExpAuth):
             return None
         UserSession.load_from_file()
         user_session_list = UserSession.search({"session_id": session_id})
+        if self.session_duration <= 0:
+            return user_session_list[0].user_id
         if len(user_session_list) > 0:
             for user_session in user_session_list:
+                created_at = user_session.created_at
+                expiration_date = created_at + \
+                    timedelta(seconds=self.session_duration)
                 if user_session.session_id == session_id:
+                    if expiration_date < datetime.now():
+                        return None
                     return user_session.user_id
         return None
 
