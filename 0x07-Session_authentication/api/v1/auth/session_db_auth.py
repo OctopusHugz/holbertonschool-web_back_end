@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """ This module implements the SessionDBAuth class """
-from typing import Union
 from models.base import DATA
+from typing import Union
 from models.user_session import UserSession
 from api.v1.auth.session_exp_auth import SessionExpAuth
 
@@ -20,9 +20,9 @@ class SessionDBAuth(SessionExpAuth):
 
     def user_id_for_session_id(self, session_id=None) -> Union[str, None]:
         """ Returns a user_id from a session_id """
-        # if DATA.get("UserSession") is None:
-        #     return None
         UserSession.load_from_file()
+        if DATA.get("UserSession") is None:
+            return None
         user_session_list = UserSession.search({"session_id": session_id})
         if len(user_session_list) > 0:
             user_session = user_session_list[0]
@@ -36,9 +36,9 @@ class SessionDBAuth(SessionExpAuth):
         session_id = self.session_cookie(request)
         if session_id is None:
             return False
-        # if DATA.get("UserSession") is None:
-        #     return False
         UserSession.load_from_file()
+        if DATA.get("UserSession") is None:
+            return False
         destroy_list = UserSession.search({"session_id": session_id})
         if len(destroy_list) > 0:
             session_to_destroy = destroy_list[0]
