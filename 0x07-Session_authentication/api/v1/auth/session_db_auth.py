@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """ This module implements the SessionDBAuth class """
+from typing import Union
 from models.base import DATA
 from models.user_session import UserSession
 from api.v1.auth.session_exp_auth import SessionExpAuth
@@ -17,7 +18,7 @@ class SessionDBAuth(SessionExpAuth):
         new_user_session.save()
         return session_id
 
-    def user_id_for_session_id(self, session_id=None):
+    def user_id_for_session_id(self, session_id=None) -> Union[]:
         """ Returns a user_id from a session_id """
         if DATA.get("UserSession") is None:
             return None
@@ -28,21 +29,20 @@ class SessionDBAuth(SessionExpAuth):
             return user_session.user_id
         return None
 
-    def destroy_session(self, request=None):
+    def destroy_session(self, request=None) -> bool:
         """ Deletes the user session/logs the user out """
         if request is None:
             return False
         session_id = self.session_cookie(request)
         if session_id is None:
             return False
-        user_id = self.user_id_for_session_id(session_id)
-        if user_id is None:
-            return False
+        # user_id = self.user_id_for_session_id(session_id)
+        # if user_id is None:
+        #     return False
         if DATA.get("UserSession") is None:
             return False
         UserSession.load_from_file()
-        destroy_list = UserSession.search(
-            {"user_id": user_id, "session_id": session_id})
+        destroy_list = UserSession.search({"session_id": session_id})
         if len(destroy_list) > 0:
             session_to_destroy = destroy_list[0]
             session_to_destroy.remove()
