@@ -14,12 +14,18 @@ class SessionDBAuth(SessionExpAuth):
         session_id = super().create_session(user_id)
         if session_id is None:
             return None
-        new_user_session = UserSession(session_id=session_id, user_id=user_id)
+        if user_id is not None:
+            new_user_session = UserSession(session_id=session_id,
+                                           user_id=user_id)
+        else:
+            new_user_session = UserSession(session_id=session_id)
         new_user_session.save()
         return session_id
 
     def user_id_for_session_id(self, session_id=None) -> Union[str, None]:
         """ Returns a user_id from a session_id """
+        if session_id is None:
+            return None
         UserSession.load_from_file()
         user_session_list = UserSession.search({"session_id": session_id})
         if len(user_session_list) > 0:
@@ -35,7 +41,6 @@ class SessionDBAuth(SessionExpAuth):
         session_id = self.session_cookie(request)
         if session_id is None:
             return False
-        UserSession.load_from_file()
         destroy_list = UserSession.search({"session_id": session_id})
         if len(destroy_list) > 0:
             for user_session in destroy_list:
