@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """ This module implements the SessionDBAuth class """
+from typing import Union
 from models.base import DATA
 from models.user_session import UserSession
 from api.v1.auth.session_exp_auth import SessionExpAuth
@@ -8,7 +9,7 @@ from api.v1.auth.session_exp_auth import SessionExpAuth
 class SessionDBAuth(SessionExpAuth):
     """Instance of the SessionDBAuth class"""
 
-    def create_session(self, user_id=None):
+    def create_session(self, user_id=None) -> Union[str, None]:
         """ Creates a session for a user_id """
         session_id = super().create_session(user_id)
         if session_id is None:
@@ -17,10 +18,10 @@ class SessionDBAuth(SessionExpAuth):
         new_user_session.save()
         return session_id
 
-    def user_id_for_session_id(self, session_id=None):
+    def user_id_for_session_id(self, session_id=None) -> Union[str, None]:
         """ Returns a user_id from a session_id """
-        if DATA.get("UserSession") is None:
-            return None
+        # if DATA.get("UserSession") is None:
+        #     return None
         UserSession.load_from_file()
         user_session_list = UserSession.search({"session_id": session_id})
         if len(user_session_list) > 0:
@@ -35,11 +36,8 @@ class SessionDBAuth(SessionExpAuth):
         session_id = self.session_cookie(request)
         if session_id is None:
             return False
-        # user_id = self.user_id_for_session_id(session_id)
-        # if user_id is None:
+        # if DATA.get("UserSession") is None:
         #     return False
-        if DATA.get("UserSession") is None:
-            return False
         UserSession.load_from_file()
         destroy_list = UserSession.search({"session_id": session_id})
         if len(destroy_list) > 0:
