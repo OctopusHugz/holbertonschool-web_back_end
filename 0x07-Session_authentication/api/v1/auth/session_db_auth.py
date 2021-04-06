@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """ This module implements the SessionDBAuth class """
+from models.base import DATA
 from models.user_session import UserSession
 from api.v1.auth.session_exp_auth import SessionExpAuth
 
@@ -18,17 +19,13 @@ class SessionDBAuth(SessionExpAuth):
 
     def user_id_for_session_id(self, session_id=None):
         """ Returns a user_id from a session_id """
+        if DATA.get("UserSession") is None:
+            return None
         UserSession.load_from_file()
         user_session_list = UserSession.search({"session_id": session_id})
         if len(user_session_list) > 0:
             user_session = user_session_list[0]
             return user_session.user_id
-        # UserSession.load_from_file()
-        # user_sessions = DATA["UserSession"]
-        # # could use UserSession.search here?!
-        # for user_session in user_sessions.values():
-        #     if user_session.session_id == session_id:
-        #         return user_session.user_id
         return None
 
     def destroy_session(self, request=None):
@@ -40,6 +37,8 @@ class SessionDBAuth(SessionExpAuth):
             return False
         user_id = self.user_id_for_session_id(session_id)
         if user_id is None:
+            return False
+        if DATA.get("UserSession") is None:
             return False
         UserSession.load_from_file()
         destroy_list = UserSession.search(
