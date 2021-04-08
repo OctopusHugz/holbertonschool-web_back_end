@@ -3,6 +3,7 @@
 from db import DB
 from sqlalchemy.exc import NoResultFound
 from typing import TypeVar
+from uuid import uuid4
 import bcrypt
 
 
@@ -10,6 +11,11 @@ def _hash_password(password: str) -> str:
     """ Hashes a plaintext password using bcrypt.hashpw """
     return bcrypt.hashpw(password.encode(),
                          bcrypt.gensalt()).decode('utf-8')
+
+
+def _generate_uuid() -> str:
+    """ Returns a string of a new uuid """
+    return str(uuid4())
 
 
 class Auth:
