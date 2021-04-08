@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """ This module implements an Auth class """
+from app import AUTH
 from db import DB
 from sqlalchemy.exc import NoResultFound
-from typing import TypeVar
+from typing import TypeVar, Union
 from uuid import uuid4
 import bcrypt
 
@@ -54,5 +55,16 @@ class Auth:
                 user_data = {"session_id": session_id}
                 self._db.update_user(found_user.id, **user_data)
                 return session_id
+        except NoResultFound:
+            return None
+
+    def get_user_from_session_id(self, session_id: str) -> Union[str, None]:
+        """ Finds a user based on a session_id and returns it """
+        # This method needs more clarity on the return value type
+        if session_id is None:
+            return None
+        try:
+            found_user = self._db.find_user_by(session_id=session_id)
+            return found_user
         except NoResultFound:
             return None
