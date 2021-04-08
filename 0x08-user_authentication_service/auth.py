@@ -44,3 +44,15 @@ class Auth:
                                       found_user.hashed_password.encode())
         except NoResultFound:
             return False
+
+    def create_session(self, email: str) -> str:
+        """ Takes an email and returns a session ID """
+        try:
+            found_user = self._db.find_user_by(email=email)
+            if found_user is not None:
+                session_id = _generate_uuid()
+                user_data = {"session_id": session_id}
+                self._db.update_user(found_user.id, **user_data)
+                return session_id
+        except NoResultFound:
+            return None
