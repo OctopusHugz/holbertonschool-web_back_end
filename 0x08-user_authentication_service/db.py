@@ -36,8 +36,14 @@ class DB:
 
     def find_user_by(self, **kwargs) -> TypeVar("User"):
         """ Returns first row found in users table with args from kwargs """
-        # change one back to .first() ?
         found_user = self._session.query(User).filter_by(**kwargs).one()
+        # change .one() back to .first() ?
         # if found_user is None:
         #     raise NoResultFound
         return found_user
+
+    def update_user(self, user_id: int, **kwargs) -> None:
+        """ Updates a user row with args from kwargs in the DB """
+        found_user = self.find_user_by(id=user_id)
+        found_user.__dict__.update({**kwargs})
+        return None
