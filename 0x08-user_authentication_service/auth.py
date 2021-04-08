@@ -28,4 +28,4 @@ class Auth:
                 raise ValueError(f"User {email} already exists")
         except NoResultFound:
             hashed_password = _hash_password(password)
-            self._db.add_user(email, hashed_password)
+            return self._db.add_user(email, hashed_password)
