@@ -2,6 +2,7 @@
 """ This module creates a DB class """
 from typing import TypeVar
 from sqlalchemy import create_engine
+from sqlalchemy.exc import NoResultFound
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
@@ -11,7 +12,8 @@ from user import Base, User
 class DB:
 
     def __init__(self):
-        self._engine = create_engine("sqlite:///a.db", echo=True)
+        # self._engine = create_engine("sqlite:///a.db", echo=True)
+        self._engine = create_engine("sqlite:///a.db")
         Base.metadata.drop_all(self._engine)
         Base.metadata.create_all(self._engine)
         self.__session = None
@@ -31,3 +33,11 @@ class DB:
         self._session.add(new_user)
         self._session.commit()
         return new_user
+
+    def find_user_by(self, **kwargs) -> TypeVar("User"):
+        """ Returns first row found in users table with args from kwargs """
+        # change one back to .first() ?
+        found_user = self._session.query(User).filter_by(**kwargs).one()
+        # if found_user is None:
+        #     raise NoResultFound
+        return found_user
