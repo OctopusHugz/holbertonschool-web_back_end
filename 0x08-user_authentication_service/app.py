@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """ This module creates a Flask app """
-from flask.helpers import make_response
 from auth import Auth
 from flask import abort, Flask, jsonify, redirect, request
+from flask.helpers import make_response
+from sqlalchemy.exc import NoResultFound
 app = Flask(__name__)
 AUTH = Auth()
 
@@ -79,6 +80,18 @@ def profile():
     # If the session ID is invalid or the user does not exist,
     # respond with a 403 HTTP status
     return abort(403)
+
+
+@app.route('/reset_password', methods=["POST"])
+def get_reset_password_token():
+    """ Returns jsonified reset password token if user exists """
+    email = request.form.get("email")
+    try:
+        AUTH._db.find_user_by(email=email)
+        reset_token = AUTH.get_reset_password_token(email)
+        return jsonify({"email": email, "reset_token": reset_token})
+    except NoResultFound:
+        abort(403)
 
 
 if __name__ == "__main__":
