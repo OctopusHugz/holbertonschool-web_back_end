@@ -57,7 +57,7 @@ def logout():
         found_user = AUTH.get_user_from_session_id(session_id)
         if found_user is not None:
             # If the user exists destroy the session
-            AUTH.destroy_session(found_user.user_id)
+            AUTH.destroy_session(found_user.id)
             # redirect to GET /
             # do I need to add 302 code?
             return redirect("/")
