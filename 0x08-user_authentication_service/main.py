@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """ End-to-end integration test of User Authentication Service """
+from app import AUTH
 from flask import jsonify
 import requests
 
@@ -19,26 +20,28 @@ def log_in_wrong_password(email: str, password: str) -> None:
     assert response.status_code == 401
 
 
-def log_in(email: str, password: str) -> str:
-    """ Testing log_in function """
-    data = {"email": email, "password": password}
-    response = requests.post("http://0.0.0.0:5000/sessions", data)
-    assert response.status_code == 200
-    assert response.json() == {"email": email, "message": "logged in"}
-
-
 def profile_unlogged() -> None:
     """ Testing profile_unlogged function """
     response = requests.get("http://0.0.0.0:5000/profile")
     assert response.status_code == 403
 
 
+def log_in(email: str, password: str) -> str:
+    """ Testing log_in function """
+    data = {"email": email, "password": password}
+    response = requests.post("http://0.0.0.0:5000/sessions", data)
+    assert response.status_code == 200
+    assert response.json() == {"email": email, "message": "logged in"}
+    return response.cookies.get("session_id")
+
+
 def profile_logged(session_id: str) -> None:
     """ Testing profile_logged function """
-    data = {"session_id": session_id}
-    response = requests.get("http://0.0.0.0:5000/profile", data)
+    found_user = AUTH.get_user_from_session_id(session_id)
+    cookies = {"session_id": session_id}
+    response = requests.get("http://0.0.0.0:5000/profile", cookies=cookies)
     assert response.status_code == 200
-    # assert
+    assert response.json() == {"email": found_user.email}
 
 
 def log_out(session_id: str) -> None:
@@ -77,7 +80,7 @@ if __name__ == "__main__":
     log_in_wrong_password(EMAIL, NEW_PASSWD)
     profile_unlogged()
     session_id = log_in(EMAIL, PASSWD)
-    # profile_logged(session_id)
+    profile_logged(session_id)
     # log_out(session_id)
     # reset_token = reset_password_token(EMAIL)
     # update_password(EMAIL, reset_token, NEW_PASSWD)
