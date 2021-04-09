@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 """ End-to-end integration test of User Authentication Service """
 from app import AUTH
-from flask import jsonify
 import requests
 
 
@@ -56,8 +55,11 @@ def reset_password_token(email: str) -> str:
     """ Testing reset_password_token function """
     data = {"email": email}
     response = requests.post("http://0.0.0.0:5000/reset_password", data)
+    found_user = AUTH._db.find_user_by(email=email)
+    res_tok = found_user.reset_token
     assert response.status_code == 200
-    # assert
+    assert response.json() == {"email": email, "reset_token": res_tok}
+    return res_tok
 
 
 def update_password(email: str, reset_token: str, new_password: str) -> None:
@@ -66,7 +68,7 @@ def update_password(email: str, reset_token: str, new_password: str) -> None:
             "new_password": new_password}
     response = requests.put("http://0.0.0.0:5000/reset_password", data)
     assert response.status_code == 200
-    # assert
+    assert response.json() == {"email": email, "message": "Password updated"}
 
 
 EMAIL = "guillaume@holberton.io"
@@ -82,6 +84,6 @@ if __name__ == "__main__":
     session_id = log_in(EMAIL, PASSWD)
     profile_logged(session_id)
     log_out(session_id)
-    # reset_token = reset_password_token(EMAIL)
-    # update_password(EMAIL, reset_token, NEW_PASSWD)
-    # log_in(EMAIL, NEW_PASSWD)
+    reset_token = reset_password_token(EMAIL)
+    update_password(EMAIL, reset_token, NEW_PASSWD)
+    log_in(EMAIL, NEW_PASSWD)
