@@ -45,5 +45,9 @@ class DB:
     def update_user(self, user_id: int, **kwargs) -> None:
         """ Updates a user row with args from kwargs in the DB """
         found_user = self.find_user_by(id=user_id)
-        found_user.__dict__.update({**kwargs})
+        for key, value in kwargs.items():
+            if key not in found_user.__dict__:
+                raise ValueError
+            setattr(found_user, key, value)
+        self._session.commit()
         return None
