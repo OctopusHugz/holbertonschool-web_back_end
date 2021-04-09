@@ -16,7 +16,7 @@ def log_in_wrong_password(email: str, password: str) -> None:
     """ Testing log_in_wrong_password function """
     data = {"email": email, "password": password}
     response = requests.post("http://0.0.0.0:5000/sessions", data)
-    # assert
+    assert response.status_code == 401
 
 
 def log_in(email: str, password: str) -> str:
@@ -69,7 +69,7 @@ NEW_PASSWD = "t4rt1fl3tt3"
 if __name__ == "__main__":
 
     register_user(EMAIL, PASSWD)
-    # log_in_wrong_password(EMAIL, NEW_PASSWD)
+    log_in_wrong_password(EMAIL, NEW_PASSWD)
     # profile_unlogged()
     # session_id = log_in(EMAIL, PASSWD)
     # profile_logged(session_id)
