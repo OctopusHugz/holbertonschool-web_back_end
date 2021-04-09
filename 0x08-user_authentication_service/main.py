@@ -23,19 +23,21 @@ def log_in(email: str, password: str) -> str:
     """ Testing log_in function """
     data = {"email": email, "password": password}
     response = requests.post("http://0.0.0.0:5000/sessions", data)
-    # assert
+    assert response.status_code == 200
+    assert response.json() == {"email": email, "message": "logged in"}
 
 
 def profile_unlogged() -> None:
     """ Testing profile_unlogged function """
     response = requests.get("http://0.0.0.0:5000/profile")
-    # assert
+    assert response.status_code == 403
 
 
 def profile_logged(session_id: str) -> None:
     """ Testing profile_logged function """
     data = {"session_id": session_id}
     response = requests.get("http://0.0.0.0:5000/profile", data)
+    assert response.status_code == 200
     # assert
 
 
@@ -43,6 +45,7 @@ def log_out(session_id: str) -> None:
     """ Testing log_out function """
     data = {"session_id": session_id}
     response = requests.delete("http://0.0.0.0:5000/sessions", data)
+    assert response.status_code == 200
     # assert
 
 
@@ -50,6 +53,7 @@ def reset_password_token(email: str) -> str:
     """ Testing reset_password_token function """
     data = {"email": email}
     response = requests.post("http://0.0.0.0:5000/reset_password", data)
+    assert response.status_code == 200
     # assert
 
 
@@ -58,6 +62,7 @@ def update_password(email: str, reset_token: str, new_password: str) -> None:
     data = {"email": email, "reset_token": reset_token,
             "new_password": new_password}
     response = requests.put("http://0.0.0.0:5000/reset_password", data)
+    assert response.status_code == 200
     # assert
 
 
@@ -70,8 +75,8 @@ if __name__ == "__main__":
 
     register_user(EMAIL, PASSWD)
     log_in_wrong_password(EMAIL, NEW_PASSWD)
-    # profile_unlogged()
-    # session_id = log_in(EMAIL, PASSWD)
+    profile_unlogged()
+    session_id = log_in(EMAIL, PASSWD)
     # profile_logged(session_id)
     # log_out(session_id)
     # reset_token = reset_password_token(EMAIL)
