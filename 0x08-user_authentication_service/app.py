@@ -60,10 +60,25 @@ def logout():
             # redirect to GET /
             # do I need to add 302 code?
             return redirect("/")
+    # If the user does not exist, respond with a 403 HTTP status.
+    return abort(403)
 
-        else:
-            # If the user does not exist, respond with a 403 HTTP status.
-            return jsonify({}, 403)
+
+# Do I need to add GET to methods here?
+@app.route('/profile')
+def profile():
+    """ Returns a users profile if it exists """
+    session_id = request.cookies.get("session_id")
+    if session_id is not None:
+        # Use it to find the user.
+        found_user = AUTH.get_user_from_session_id(session_id)
+        if found_user is not None:
+            # If the user exist, respond with a 200 HTTP status and
+            # the following JSON payload {"email": "<user email>"}
+            return jsonify({"email": found_user.email})
+    # If the session ID is invalid or the user does not exist,
+    # respond with a 403 HTTP status
+    return abort(403)
 
 
 if __name__ == "__main__":
