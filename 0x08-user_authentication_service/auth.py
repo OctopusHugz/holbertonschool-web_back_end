@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 """ This module implements an Auth class """
-from app import AUTH
 from db import DB
 from sqlalchemy.exc import NoResultFound
 from typing import TypeVar, Union
