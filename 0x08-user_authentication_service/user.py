@@ -8,6 +8,7 @@ Base = declarative_base()
 
 
 class User(Base):
+    """ Instance of User class """
     __tablename__ = 'users'
 
     id = Column(INTEGER, primary_key=True)
