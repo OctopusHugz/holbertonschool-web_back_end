@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """ This module implements an Auth class """
-from user import User
 from db import DB
 from sqlalchemy.exc import NoResultFound
 from typing import Union
 from uuid import uuid4
+from user import User
 
 
 def _hash_password(password: str) -> str:
