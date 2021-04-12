@@ -10,7 +10,8 @@ import bcrypt
 
 def _hash_password(password: str) -> str:
     """ Hashes a plaintext password using bcrypt.hashpw """
-    return bcrypt.hashpw(password.encode(), bcrypt.gensalt())
+    if password and isinstance(password, str):
+        return bcrypt.hashpw(password.encode(), bcrypt.gensalt())
 
 
 def _generate_uuid() -> str:
