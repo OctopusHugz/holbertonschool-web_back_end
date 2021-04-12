@@ -13,7 +13,7 @@ class DB:
     """ Instance of DB class """
 
     def __init__(self):
-    """ Create DB instance """
+        """ Create DB instance """
         self._engine = create_engine("sqlite:///a.db", echo=True)
         # self._engine = create_engine(
         #    "sqlite:///a.db", connect_args={"check_same_thread": False})
@@ -24,7 +24,7 @@ class DB:
 
     @property
     def _session(self):
-    """ Sets a session attribute """
+        """ Sets a session attribute """
         if self.__session is None:
             DBSession = sessionmaker(bind=self._engine)
             self.__session = DBSession()
