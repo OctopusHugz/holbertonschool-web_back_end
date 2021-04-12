@@ -39,7 +39,7 @@ class DB:
         self._session.commit()
         return new_user
 
-    def find_user_by(self, **kwargs) -> TypeVar("User"):
+    def find_user_by(self, **kwargs) -> User:
         """ Returns first row found in users table with args from kwargs """
         found_user = self._session.query(User).filter_by(**kwargs).one()
         # change .one() back to .first() ?
