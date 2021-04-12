@@ -5,13 +5,13 @@ from db import DB
 from sqlalchemy.exc import NoResultFound
 from typing import TypeVar, Union
 from uuid import uuid4
-import bcrypt
+from bcrypt import hashpw, gensalt, checkpw
 
 
 def _hash_password(password: str) -> str:
     """ Hashes a plaintext password using bcrypt.hashpw """
     if password and isinstance(password, str):
-        return bcrypt.hashpw(password.encode(), bcrypt.gensalt())
+        return hashpw(password.encode(), gensalt())
 
 
 def _generate_uuid() -> str:
@@ -41,8 +41,7 @@ class Auth:
         try:
             found_user = self._db.find_user_by(email=email)
             if found_user is not None:
-                return bcrypt.checkpw(password,
-                                      found_user.hashed_password)
+                return checkpw(password, found_user.hashed_password)
         except NoResultFound:
             return False
 
