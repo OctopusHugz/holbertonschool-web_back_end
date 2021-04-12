@@ -102,7 +102,7 @@ class Auth:
             found_user = self._db.find_user_by(reset_token=reset_token)
             hashed_password = _hash_password(password)
             user_data = {"hashed_password": hashed_password,
-                         "reset_token": None}
+                         "reset_token": "None"}
             self._db.update_user(found_user.id, **user_data)
             return None
         except NoResultFound:
