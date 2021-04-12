@@ -37,7 +37,6 @@ class DB:
         new_user.hashed_password = hashed_password
         self._session.add(new_user)
         self._session.commit()
-        self._session.close()
         return new_user
 
     def find_user_by(self, **kwargs) -> TypeVar("User"):
