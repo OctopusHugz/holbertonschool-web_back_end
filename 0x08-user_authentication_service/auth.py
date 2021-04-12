@@ -43,8 +43,10 @@ class Auth:
         from bcrypt import checkpw
         try:
             found_user = self._db.find_user_by(email=email)
-            if found_user is not None:
-                return checkpw(password.encode(), found_user.hashed_password)
+            if checkpw(password.encode(), found_user.hashed_password):
+                return True
+            else:
+                return False
         except NoResultFound:
             return False
 
