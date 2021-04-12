@@ -38,11 +38,8 @@ class DB:
         """ Updates a user row with args from kwargs in the DB """
         found_user = self.find_user_by(id=user_id)
         for key, value in kwargs.items():
-            # if not hasattr(found_user, key):
-            #     raise ValueError
-            if key not in dir(User):
+            if not hasattr(found_user, key) or key == "id":
                 raise ValueError
-            if key != 'id':
-                setattr(found_user, key, value)
+            setattr(found_user, key, value)
         self._session.commit()
         return None
