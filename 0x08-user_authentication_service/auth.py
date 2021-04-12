@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """ This module implements an Auth class """
 from db import DB
-from sqlalchemy.exc import NoResultFound
+from sqlalchemy.orm.exc import NoResultFound
 from typing import Union
 from user import User
 from uuid import uuid4
