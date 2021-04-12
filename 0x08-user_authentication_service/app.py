@@ -3,7 +3,7 @@
 from auth import Auth
 from flask import abort, Flask, jsonify, redirect, request
 from flask.helpers import make_response
-from sqlalchemy.exc import NoResultFound
+from sqlalchemy.orm.exc import NoResultFound
 app = Flask(__name__)
 AUTH = Auth()
 
