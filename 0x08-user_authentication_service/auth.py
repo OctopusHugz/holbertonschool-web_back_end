@@ -12,6 +12,7 @@ def _hash_password(password: str) -> str:
     """ Hashes a plaintext password using bcrypt.hashpw """
     if password and isinstance(password, str):
         return hashpw(password.encode(), gensalt())
+    return None
 
 
 def _generate_uuid() -> str:
