@@ -44,7 +44,7 @@ class Auth:
         try:
             found_user = self._db.find_user_by(email=email)
             if found_user is not None:
-                return checkpw(password, found_user.hashed_password)
+                return checkpw(password.encode(), found_user.hashed_password)
         except NoResultFound:
             return False
 
