@@ -8,7 +8,7 @@ from uuid import uuid4
 
 
 def _hash_password(password: str) -> str:
-    """ Hashes a plaintext password """
+    """ Hashes a plaintext password and returns salted hash """
     from bcrypt import gensalt, hashpw
     if password is None or not isinstance(password, str):
         return None
