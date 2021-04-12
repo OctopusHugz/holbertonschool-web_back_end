@@ -39,9 +39,10 @@ class DB:
             found_user = self.find_user_by(id=user_id)
         except Exception:
             return None
-        for key, value in kwargs.items():
-            if not hasattr(found_user, key):
-                raise ValueError
-            setattr(found_user, key, value)
-        self._session.commit()
-        return None
+        finally:
+            for key, value in kwargs.items():
+                if not hasattr(found_user, key):
+                    raise ValueError
+                setattr(found_user, key, value)
+            self._session.commit()
+            return None
