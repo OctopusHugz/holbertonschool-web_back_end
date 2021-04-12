@@ -10,8 +10,7 @@ import bcrypt
 
 def _hash_password(password: str) -> str:
     """ Hashes a plaintext password using bcrypt.hashpw """
-    return bcrypt.hashpw(password.encode(),
-                         bcrypt.gensalt()).decode('utf-8')
+    return bcrypt.hashpw(password.encode(), bcrypt.gensalt())
 
 
 def _generate_uuid() -> str:
@@ -41,8 +40,8 @@ class Auth:
         try:
             found_user = self._db.find_user_by(email=email)
             if found_user is not None:
-                return bcrypt.checkpw(password.encode(),
-                                      found_user.hashed_password.encode())
+                return bcrypt.checkpw(password,
+                                      found_user.hashed_password)
         except NoResultFound:
             return False
 
