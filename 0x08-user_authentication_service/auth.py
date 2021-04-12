@@ -10,9 +10,9 @@ from uuid import uuid4
 def _hash_password(password: str) -> str:
     """ Hashes a plaintext password """
     from bcrypt import gensalt, hashpw
-    if password and isinstance(password, str):
-        return hashpw(password.encode(), gensalt())
-    return None
+    if password is None or not isinstance(password, str):
+        return None
+    return hashpw(password.encode(), gensalt())
 
 
 def _generate_uuid() -> str:
