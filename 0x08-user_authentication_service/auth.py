@@ -98,14 +98,13 @@ class Auth:
 
     def update_password(self, reset_token: str, password: str) -> None:
         """ Updates a user password to provided password using reset token """
-        if reset_token and isinstance(reset_token, str):
+        if isinstance(reset_token, str) and isinstance(password, str):
             try:
                 found_user = self._db.find_user_by(reset_token=reset_token)
+                hashed_password = _hash_password(password)
+                user_data = {"hashed_password": hashed_password,
+                             "reset_token": None}
+                self._db.update_user(found_user.id, **user_data)
             except NoResultFound:
                 raise ValueError
-        if password and isinstance(password, str):
-            hashed_password = _hash_password(password)
-            user_data = {"hashed_password": hashed_password,
-                         "reset_token": None}
-            self._db.update_user(found_user.id, **user_data)
         return None
