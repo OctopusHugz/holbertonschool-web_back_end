@@ -4,6 +4,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.exc import NoResultFound
+from sqlalchemy.exc import IntegrityError
 
 from user import Base, User
 
@@ -36,13 +37,20 @@ class DB:
 
     def update_user(self, user_id: int, **kwargs) -> None:
         """ Updates a user row with args from kwargs in the DB """
-        import bcrypt
+        # make sure values fit with expected types in user table?
         found_user = self.find_user_by(id=user_id)
         for key, value in kwargs.items():
             if not hasattr(found_user, key):
                 raise ValueError
-            if key == "hashed_password":
-                value = bcrypt.hashpw(value.encode(), bcrypt.gensalt())
+            if key in ["email", "hashed_password"]:
+                if value is None:
+                    raise ValueError
             setattr(found_user, key, value)
+            # if key == "id" and not isinstance(value, int):
+            #     pass
+            # try:
+            #     setattr(found_user, key, value)
+            # except Exception:
+            #     raise ValueError
         self._session.commit()
         return None
