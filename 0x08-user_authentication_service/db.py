@@ -38,7 +38,9 @@ class DB:
         """ Updates a user row with args from kwargs in the DB """
         found_user = self.find_user_by(id=user_id)
         for key, value in kwargs.items():
-            if not hasattr(found_user, key):
+            # if not hasattr(found_user, key):
+            #     raise ValueError
+            if key not in dir(User):
                 raise ValueError
             if key != 'id':
                 setattr(found_user, key, value)
