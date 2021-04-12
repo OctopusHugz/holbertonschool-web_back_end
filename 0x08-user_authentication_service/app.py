@@ -8,7 +8,7 @@ app = Flask(__name__)
 AUTH = Auth()
 
 
-@app.route('/')
+@app.route('/', methods=["GET"])
 # Do I really need to add methods=["GET"] in decorator?
 def hello():
     """ Returns a jsonified message """
