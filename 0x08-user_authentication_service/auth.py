@@ -44,7 +44,8 @@ class Auth:
         if isinstance(email, str) and isinstance(password, str):
             try:
                 found_user = self._db.find_user_by(email=email)
-                if bcrypt.checkpw(password.encode(), found_user.hashed_password):
+                if bcrypt.checkpw(password.encode(),
+                                  found_user.hashed_password):
                     return True
                 else:
                     return False
