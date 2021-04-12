@@ -36,10 +36,7 @@ class DB:
 
     def update_user(self, user_id: int, **kwargs) -> None:
         """ Updates a user row with args from kwargs in the DB """
-        try:
-            found_user = self.find_user_by(id=user_id)
-        except Exception:
-            return None
+        found_user = self.find_user_by(id=user_id)
         for key, value in kwargs.items():
             if not hasattr(found_user, key):
                 raise ValueError
