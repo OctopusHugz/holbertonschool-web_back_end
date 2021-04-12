@@ -4,12 +4,13 @@ from auth import Auth
 from flask import abort, Flask, jsonify, redirect, request
 from flask.helpers import make_response
 from sqlalchemy.exc import NoResultFound
+
+
 app = Flask(__name__)
 AUTH = Auth()
 
 
 @app.route('/', methods=["GET"])
-# Do I really need to add methods=["GET"] in decorator?
 def hello():
     """ Returns a jsonified message """
     return jsonify({"message": "Bienvenue"})
