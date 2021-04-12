@@ -12,7 +12,7 @@ def _hash_password(password: str) -> str:
     from bcrypt import gensalt, hashpw
     if password is None or not isinstance(password, str):
         return None
-    return hashpw(password.encode(), gensalt())
+    return str(hashpw(password.encode(), gensalt()))
 
 
 def _generate_uuid() -> str:
