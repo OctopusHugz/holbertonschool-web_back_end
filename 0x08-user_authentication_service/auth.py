@@ -5,13 +5,14 @@ from db import DB
 from sqlalchemy.exc import NoResultFound
 from typing import TypeVar, Union
 from uuid import uuid4
-from bcrypt import hashpw, gensalt, checkpw
 
 
 def _hash_password(password: str) -> str:
-    """ Hashes a plaintext password using bcrypt.hashpw """
+    """ Hashes a plaintext password """
+    from bcrypt import hashpw, gensalt
     if password and isinstance(password, str):
         return hashpw(password.encode(), gensalt())
+    return None
 
 
 def _generate_uuid() -> str:
@@ -38,7 +39,8 @@ class Auth:
             return self._db.add_user(email, hashed_password)
 
     def valid_login(self, email: str, password: str) -> bool:
-        """Locates user by email, and checks password with bcrypt.checkpw"""
+        """Locates user by email, and checks password"""
+        from bcrypt import checkpw
         try:
             found_user = self._db.find_user_by(email=email)
             if found_user is not None:
@@ -58,7 +60,7 @@ class Auth:
         except NoResultFound:
             return None
 
-    def get_user_from_session_id(self, session_id: str) -> Union[str, None]:
+    def get_user_from_session_id(self, session_id: str) -> Union[User, None]:
         """ Finds a user based on a session_id and returns it """
         # This method needs more clarity on the return value type
         if session_id is None:
