@@ -40,6 +40,7 @@ class DB:
         for key, value in kwargs.items():
             if not hasattr(found_user, key):
                 raise ValueError
-            setattr(found_user, key, value)
+            if key != 'id':
+                setattr(found_user, key, value)
         self._session.commit()
         return None
