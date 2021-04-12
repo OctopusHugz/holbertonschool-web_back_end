@@ -3,7 +3,7 @@
 from user import User
 from db import DB
 from sqlalchemy.exc import NoResultFound
-from typing import TypeVar, Union
+from typing import Union
 from uuid import uuid4
 
 
