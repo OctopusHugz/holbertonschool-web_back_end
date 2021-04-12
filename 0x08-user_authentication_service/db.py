@@ -43,7 +43,7 @@ class DB:
             if not hasattr(found_user, key):
                 raise ValueError
             if key in ["email", "hashed_password"]:
-                if value is None:
+                if value is None or value == "":
                     raise ValueError
             setattr(found_user, key, value)
             # if key == "id" and not isinstance(value, int):
