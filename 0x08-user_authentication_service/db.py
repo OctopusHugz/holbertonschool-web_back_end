@@ -34,7 +34,7 @@ class DB:
         """ Returns first row found in users table with args from kwargs """
         return self._session.query(User).filter_by(**kwargs).one()
 
-    def update_user(self, user_id: int, **kwargs):
+    def update_user(self, user_id: int, **kwargs) -> None:
         """ Updates a user row with args from kwargs in the DB """
         found_user = self.find_user_by(id=user_id)
         for key, value in kwargs.items():
