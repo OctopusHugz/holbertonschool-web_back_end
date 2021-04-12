@@ -37,7 +37,7 @@ class DB:
         """ Updates a user row with args from kwargs in the DB """
         try:
             found_user = self.find_user_by(id=user_id)
-        except NoResultFound:
+        except Exception:
             return None
         for key, value in kwargs.items():
             if not hasattr(found_user, key):
