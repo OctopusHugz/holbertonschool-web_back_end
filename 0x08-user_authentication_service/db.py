@@ -3,6 +3,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm.exc import NoResultFound
 
 from user import Base, User
 
@@ -35,9 +36,10 @@ class DB:
 
     def update_user(self, user_id: int, **kwargs) -> None:
         """ Updates a user row with args from kwargs in the DB """
-        if not isinstance(user_id, int):
+        try:
+            found_user = self.find_user_by(id=user_id)
+        except NoResultFound:
             return None
-        found_user = self.find_user_by(id=user_id)
         for key, value in kwargs.items():
             if not hasattr(found_user, key):
                 raise ValueError
