@@ -40,10 +40,10 @@ class Auth:
 
     def valid_login(self, email: str, password: str) -> bool:
         """Locates user by email, and checks password"""
-        from bcrypt import checkpw
+        import bcrypt
         try:
             found_user = self._db.find_user_by(email=email)
-            if checkpw(password.encode(), found_user.hashed_password):
+            if bcrypt.checkpw(password.encode(), found_user.hashed_password):
                 return True
             else:
                 return False
