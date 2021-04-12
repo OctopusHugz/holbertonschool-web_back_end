@@ -41,14 +41,16 @@ class Auth:
     def valid_login(self, email: str, password: str) -> bool:
         """Locates user by email, and checks password"""
         import bcrypt
-        try:
-            found_user = self._db.find_user_by(email=email)
-            if bcrypt.checkpw(password.encode(), found_user.hashed_password):
-                return True
-            else:
+        if isinstance(email, str) and isinstance(password, str):
+            try:
+                found_user = self._db.find_user_by(email=email)
+                if bcrypt.checkpw(password.encode(), found_user.hashed_password):
+                    return True
+                else:
+                    return False
+            except NoResultFound:
                 return False
-        except NoResultFound:
-            return False
+        return False
 
     def create_session(self, email: str) -> str:
         """ Takes an email and returns a session ID """
