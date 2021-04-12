@@ -1,30 +1,21 @@
 #!/usr/bin/env python3
 """ This module creates a DB class """
-from typing import TypeVar
 from sqlalchemy import create_engine
-from sqlalchemy.exc import NoResultFound
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-
 from user import Base, User
 
 
 class DB:
-    """ Instance of DB class """
 
     def __init__(self):
-        """ Create DB instance """
-        # self._engine = create_engine("sqlite:///a.db")
-        self._engine = create_engine("sqlite:///a.db", echo=True)
-        # self._engine = create_engine(
-        #     "sqlite:///a.db", connect_args={"check_same_thread": False})
+        self._engine = create_engine("sqlite:///a.db")
         Base.metadata.drop_all(self._engine)
         Base.metadata.create_all(self._engine)
         self.__session = None
 
     @property
     def _session(self):
-        """ Sets a session attribute """
         if self.__session is None:
             DBSession = sessionmaker(bind=self._engine)
             self.__session = DBSession()
@@ -39,11 +30,7 @@ class DB:
 
     def find_user_by(self, **kwargs) -> User:
         """ Returns first row found in users table with args from kwargs """
-        found_user = self._session.query(User).filter_by(**kwargs).one()
-        # change .one() back to .first() ?
-        # if found_user is None:
-        #     raise NoResultFound
-        return found_user
+        return self._session.query(User).filter_by(**kwargs).one()
 
     def update_user(self, user_id: int, **kwargs) -> None:
         """ Updates a user row with args from kwargs in the DB """
