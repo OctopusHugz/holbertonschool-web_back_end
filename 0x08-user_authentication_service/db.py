@@ -31,11 +31,12 @@ class DB:
 
     def add_user(self, email: str, hashed_password: str) -> TypeVar("User"):
         """ This method adds a user to the DB """
+        sesh = self._session
         new_user = User(email=email, hashed_password=hashed_password)
         # new_user.email = email
         # new_user.hashed_password = hashed_password
-        self._session.add(new_user)
-        self._session.commit()
+        sesh.add(new_user)
+        sesh.commit()
         return new_user
 
     def find_user_by(self, **kwargs) -> TypeVar("User"):
