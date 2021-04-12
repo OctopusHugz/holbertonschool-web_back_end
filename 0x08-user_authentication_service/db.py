@@ -36,10 +36,13 @@ class DB:
 
     def update_user(self, user_id: int, **kwargs) -> None:
         """ Updates a user row with args from kwargs in the DB """
+        import bcrypt
         found_user = self.find_user_by(id=user_id)
         for key, value in kwargs.items():
-            if not hasattr(found_user, key) or key == "id":
+            if not hasattr(found_user, key):
                 raise ValueError
+            if key == "hashed_password":
+                value = bcrypt.hashpw(value.encode(), bcrypt.gensalt())
             setattr(found_user, key, value)
         self._session.commit()
         return None
