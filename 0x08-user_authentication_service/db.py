@@ -6,6 +6,7 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.exc import InvalidRequestError
 from sqlalchemy import update
+from sqlalchemy.orm.session import Session
 from user import User
 
 from user import Base
@@ -15,7 +16,7 @@ class DB:
     """DB class
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize a new DB instance
         """
         self._engine = create_engine("sqlite:///a.db")
@@ -24,7 +25,7 @@ class DB:
         self.__session = None
 
     @property
-    def _session(self):
+    def _session(self) -> Session:
         """Memoized session object
         """
         if self.__session is None:
