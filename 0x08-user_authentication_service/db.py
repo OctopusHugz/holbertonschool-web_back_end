@@ -1,8 +1,11 @@
 #!/usr/bin/env python3
-""" This module creates a DB class """
+"""DB module
+"""
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm.session import Session
+
 from user import Base, User
 
 
@@ -10,16 +13,16 @@ class DB:
     """DB class
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize a new DB instance
         """
-        self._engine = create_engine("sqlite:///a.db")
+        self._engine = create_engine("sqlite:///a.db", echo=True)
         Base.metadata.drop_all(self._engine)
         Base.metadata.create_all(self._engine)
         self.__session = None
 
     @property
-    def _session(self):
+    def _session(self) -> Session:
         """Memoized session object
         """
         if self.__session is None:
