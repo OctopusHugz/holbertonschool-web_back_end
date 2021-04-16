@@ -16,3 +16,4 @@ index.html
 *sass-cache*
 node_modules
 *.db
+*.pyc
