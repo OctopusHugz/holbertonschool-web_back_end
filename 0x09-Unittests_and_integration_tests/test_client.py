@@ -2,7 +2,7 @@
 """ This module tests the clients.py file """
 from client import GithubOrgClient
 from parameterized import parameterized
-from unittest.mock import patch
+from unittest.mock import PropertyMock, patch
 import unittest
 
 
@@ -14,7 +14,19 @@ class TestGithubOrgClient(unittest.TestCase):
         ("abc")
     ])
     def test_org(self, org_name):
-        """ Test function for client.org """
+        """ Test function for client.GithubOrgClient.org """
         with patch('client.GithubOrgClient.org') as mock_org:
             client = GithubOrgClient(org_name=org_name)
             self.assertEqual(client.org.return_value, mock_org.return_value)
+
+    def test_public_repos_url(self):
+        """ Test function for client.GithubOrgClient._public_repos_url """
+        with patch('client.GithubOrgClient.org', new_callable=PropertyMock)\
+                as mock_org:
+            # Use patch as a context manager to patch GitHubOrgClient.org
+            # and make it return a known payload
+            mock_org.return_value = {"repos_url": True}
+            client = GithubOrgClient("new_org")
+            # self.assertEqual(client._public_repos_url,
+            #                  mock_org.return_value.get("repos_url"))
+            self.assertEqual(client._public_repos_url, True)
