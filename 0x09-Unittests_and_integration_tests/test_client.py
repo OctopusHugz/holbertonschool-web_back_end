@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
 """ This module tests the clients.py file """
+from unittest import mock
 from client import GithubOrgClient
 from fixtures import TEST_PAYLOAD
-from parameterized import parameterized
+from parameterized import parameterized, parameterized_class
 from unittest.mock import PropertyMock, patch
-from utils import get_json
 import unittest
 
 
 class TestGithubOrgClient(unittest.TestCase):
-    """ Class for testing access_nested_map function """
+    """ Class for testing GithubOrgClient """
 
     @parameterized.expand([
         ("google"),
@@ -52,3 +52,36 @@ class TestGithubOrgClient(unittest.TestCase):
         """ Test function for client.GithubOrgClient.has_license """
         new_client = GithubOrgClient("new_org")
         self.assertEqual(new_client.has_license(repo, license_key), expected)
+
+
+@parameterized_class([{"org_payload": TEST_PAYLOAD[0][0],
+                      "repos_payload": TEST_PAYLOAD[0][1],
+                       "expected_repos": TEST_PAYLOAD[0][2],
+                       "apache2_repos": TEST_PAYLOAD[0][3]}])
+class TestIntegrationGithubOrgClient(unittest.TestCase):
+    """ Class for integration test of GithubOrgClient """
+
+    @classmethod
+    def setUpClass(cls):
+        """ setUp function to run before tests """
+        # with patch('requests.get') as mock_get:
+        #     mock_get.return_value = TEST_PAYLOAD
+        #     mock_get.side_effect =
+        # cls.get_patcher = patch(mock_get(cls.org_payload).json())
+        # cls.get_patcher = patch('requests.get', return_value=TEST_PAYLOAD)
+        cls.get_patcher = patch('requests.get', return_value=TEST_PAYLOAD)
+
+        # cls.get_patcher = patch('requests.get')
+        # cls.get_patcher.return_value = TEST_PAYLOAD
+
+    # only mock code that sends external requests
+    def test_integrations(self):
+        """ Runs end-to-end integration tests """
+        my_patcher = self.__class__.get_patcher.start()
+        my_patcher.side_effect = TEST_PAYLOAD
+        self.assertEqual(my_patcher.return_value, TEST_PAYLOAD)
+
+    @classmethod
+    def tearDownClass(cls):
+        """ tearDown function to run after tests """
+        cls.get_patcher.stop()
