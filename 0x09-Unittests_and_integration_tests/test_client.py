@@ -23,10 +23,6 @@ class TestGithubOrgClient(unittest.TestCase):
         """ Test function for client.GithubOrgClient._public_repos_url """
         with patch('client.GithubOrgClient.org', new_callable=PropertyMock)\
                 as mock_org:
-            # Use patch as a context manager to patch GitHubOrgClient.org
-            # and make it return a known payload
             mock_org.return_value = {"repos_url": True}
             client = GithubOrgClient("new_org")
-            # self.assertEqual(client._public_repos_url,
-            #                  mock_org.return_value.get("repos_url"))
             self.assertEqual(client._public_repos_url, True)
