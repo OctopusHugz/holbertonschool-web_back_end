@@ -23,6 +23,17 @@ class TestGithubOrgClient(unittest.TestCase):
         """ Test function for client.GithubOrgClient._public_repos_url """
         with patch('client.GithubOrgClient.org', new_callable=PropertyMock)\
                 as mock_org:
-            mock_org.return_value = {"repos_url": True}
+            mock_org.return_value = {"repos_url": "https://fake_url.com"}
             client = GithubOrgClient("new_org")
-            self.assertEqual(client._public_repos_url, True)
+            self.assertEqual(client._public_repos_url, "https://fake_url.com")
+
+    # def test_public_repos(self):
+    #     """ Test function for client.GithubOrgClient.public_repos """
+        # Use @patch as a decorator to mock get_json
+        # and make it return a payload of your choice
+
+        # Use patch as a context manager to mock
+        # GitHubOrgClient._public_repos_url and return a value of your choice
+
+        # Test that the list of repos is what you expect from chosen payload
+        # Test that the mocked property and the mocked get_json was called once
