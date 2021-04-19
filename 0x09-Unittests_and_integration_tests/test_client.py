@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 """ This module tests the clients.py file """
 from client import GithubOrgClient
+from fixtures import TEST_PAYLOAD
 from parameterized import parameterized
 from unittest.mock import PropertyMock, patch
+from utils import get_json
 import unittest
 
 
@@ -27,13 +29,17 @@ class TestGithubOrgClient(unittest.TestCase):
             client = GithubOrgClient("new_org")
             self.assertEqual(client._public_repos_url, True)
 
-    # def test_public_repos(self):
-    #     """ Test function for client.GithubOrgClient.public_repos """
-        # Use @patch as a decorator to mock get_json
-        # and make it return a payload of your choice
+    @patch('client.get_json')
+    def test_public_repos(self, mock_get_json):
+        """ Test function for client.GithubOrgClient.public_repos """
+        mock_get_json.return_value = [
+            {"name": "public_repo_0"}, {"name": "public_repo_1"}]
 
-        # Use patch as a context manager to mock
-        # GitHubOrgClient._public_repos_url and return a value of your choice
-
-        # Test that the list of repos is what you expect from chosen payload
-        # Test that the mocked property and the mocked get_json was called once
+        with patch('client.GithubOrgClient._public_repos_url',
+                   new_callable=PropertyMock) as mock_pru:
+            mock_pru.return_value = "https://api.github.com/users/google/repos"
+            new_client = GithubOrgClient("google")
+            self.assertEqual(new_client.public_repos(), [repo.get(
+                "name") for repo in mock_get_json.return_value])
+            mock_get_json.assert_called_once()
+            mock_pru.assert_called_once()
