@@ -13,7 +13,7 @@ from utils import (
 )
 
 
-class GitHubOrgClient:
+class GithubOrgClient:
     """A Githib org client
     """
     ORG_URL = "https://api.github.com/orgs/{org}"
