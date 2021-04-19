@@ -41,8 +41,6 @@ class TestGetJson(unittest.TestCase):
             mock_obj.return_value = Mock()
             mock_obj.return_value.json.return_value = test_payload
             response = get_json(test_url)
-            # Test that the mocked get method was called exactly once
-            # per input with test_url as argument.
             self.assertEqual(response, test_payload)
 
 
