@@ -2,7 +2,7 @@
 """ This module tests the utils.py file """
 from parameterized import parameterized
 from unittest.mock import Mock, patch
-from utils import access_nested_map, get_json
+from utils import access_nested_map, get_json, memoize
 import unittest
 
 
@@ -29,7 +29,7 @@ class TestAccessNestedMap(unittest.TestCase):
 
 
 class TestGetJson(unittest.TestCase):
-    """ Class for testing get_json """
+    """ Class for testing get_json function """
 
     @parameterized.expand([
         ("http://example.com", {"payload": True}),
@@ -42,6 +42,21 @@ class TestGetJson(unittest.TestCase):
             mock_obj.return_value.json.return_value = test_payload
             response = get_json(test_url)
             self.assertEqual(response, test_payload)
+
+
+class TestMemoize(unittest.TestCase):
+    """ Class for testing memoize function """
+
+    def test_memoize(self):
+        """ Test function for memoize """
+        class TestClass:
+
+            def a_method(self):
+                return 42
+
+            @memoize
+            def a_property(self):
+                return self.a_method()
 
 
 if __name__ == '__main__':
