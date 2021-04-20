@@ -72,9 +72,6 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
     def side_effect(cls):
         """ Checks url for validity """
         assert cls.get_patcher.return_value == TEST_PAYLOAD
-        # use side_effect to make sure the mock of requests.get(url).json()
-        # returns the correct fixtures for the various
-        # values of url that you anticipate to receive
 
     # only mock code that sends external requests
     # def test_public_repos(self):
