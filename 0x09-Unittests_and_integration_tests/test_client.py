@@ -64,9 +64,6 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         """ setUp function to run before tests """
-        # cls.get_patcher = patch(
-        #     'requests.get', return_value=TEST_PAYLOAD,
-        #     side_effect=cls.side_effect())
         cls.get_patcher = patch('requests.get')
         cls.get_patcher.start()
         cls.get_patcher.side_effect = cls.side_effect()
