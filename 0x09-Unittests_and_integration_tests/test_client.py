@@ -67,7 +67,6 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
         cls.get_patcher = patch('requests.get')
         cls.get_patcher.start()
         cls.get_patcher.side_effect = cls.side_effect()
-        # cls.get_patcher.side_effect = cls.side_effect(cls.org_payload)
 
     @classmethod
     def side_effect(cls):
