@@ -70,8 +70,8 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
         # cls.get_patcher = patch(mock_get(cls.org_payload).json())
         # cls.get_patcher = patch('requests.get', return_value=TEST_PAYLOAD)
         cls.get_patcher = patch('requests.get')
-        my_patcher = cls.get_patcher.start()
-        my_patcher.side_effect = TEST_PAYLOAD
+        cls.get_patcher.start()
+        cls.get_patcher.side_effect = TEST_PAYLOAD
 
         # cls.get_patcher = patch('requests.get')
         # cls.get_patcher.return_value = TEST_PAYLOAD
