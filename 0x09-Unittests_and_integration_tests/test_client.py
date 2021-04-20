@@ -64,17 +64,17 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         """ setUp function to run before tests """
-        # with patch('requests.get') as mock_get:
-        #     mock_get.return_value = TEST_PAYLOAD
-        #     mock_get.side_effect =
-        # cls.get_patcher = patch(mock_get(cls.org_payload).json())
         # cls.get_patcher = patch('requests.get', return_value=TEST_PAYLOAD)
         cls.get_patcher = patch('requests.get')
         cls.get_patcher.start()
-        cls.get_patcher.side_effect = TEST_PAYLOAD
+        cls.get_patcher.side_effect.json.return_value = TEST_PAYLOAD
+        # cls.get_patcher.side_effect = cls.side_effect(cls.org_payload)
 
-        # cls.get_patcher = patch('requests.get')
-        # cls.get_patcher.return_value = TEST_PAYLOAD
+    # def side_effect(url):
+    #     """ Checks url for validity """
+        # use side_effect to make sure the mock of requests.get(url).json()
+        # returns the correct fixtures for the various
+        # values of url that you anticipate to receive
 
     # only mock code that sends external requests
 
