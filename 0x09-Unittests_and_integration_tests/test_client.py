@@ -64,19 +64,25 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         """ setUp function to run before tests """
-        cls.get_patcher = patch('requests.get', return_value=TEST_PAYLOAD)
+        cls.get_patcher = patch(
+            'requests.get', return_value=TEST_PAYLOAD, side_effect=cls.side_effect())
         # cls.get_patcher = patch('requests.get')
         cls.get_patcher.start()
-        cls.get_patcher.json.side_effect.return_value = TEST_PAYLOAD
+        # cls.get_patcher.side_effect = cls.side_effect()
         # cls.get_patcher.side_effect = cls.side_effect(cls.org_payload)
 
-    # def side_effect(url):
-    #     """ Checks url for validity """
+    @classmethod
+    def side_effect(cls):
+        """ Checks url for validity """
+        assert cls.get_patcher.side_effect == TEST_PAYLOAD
         # use side_effect to make sure the mock of requests.get(url).json()
         # returns the correct fixtures for the various
         # values of url that you anticipate to receive
 
     # only mock code that sends external requests
+    # def test_public_repos(self):
+    #     """ Test function for public_repos """
+    #     repos = self.__class__.get_patcher("")
 
     @classmethod
     def tearDownClass(cls):
