@@ -69,17 +69,14 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
         #     mock_get.side_effect =
         # cls.get_patcher = patch(mock_get(cls.org_payload).json())
         # cls.get_patcher = patch('requests.get', return_value=TEST_PAYLOAD)
-        cls.get_patcher = patch('requests.get', return_value=TEST_PAYLOAD)
+        cls.get_patcher = patch('requests.get')
+        my_patcher = cls.get_patcher.start()
+        my_patcher.side_effect = TEST_PAYLOAD
 
         # cls.get_patcher = patch('requests.get')
         # cls.get_patcher.return_value = TEST_PAYLOAD
 
     # only mock code that sends external requests
-    def test_integrations(self):
-        """ Runs end-to-end integration tests """
-        my_patcher = self.__class__.get_patcher.start()
-        my_patcher.side_effect = TEST_PAYLOAD
-        self.assertEqual(my_patcher.return_value, TEST_PAYLOAD)
 
     @classmethod
     def tearDownClass(cls):
