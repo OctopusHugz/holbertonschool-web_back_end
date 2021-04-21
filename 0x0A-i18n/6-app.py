@@ -52,7 +52,7 @@ def get_locale():
     if header_locale is not None and header_locale in Config.LANGUAGES:
         return header_locale
     # Default locale
-    return request.accept_languages.best_match(app.config['LANGUAGES'])
+    return Config.BABEL_DEFAULT_LOCALE
 
 
 def get_user(user_id):
