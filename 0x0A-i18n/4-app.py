@@ -26,3 +26,7 @@ def get_locale():
     if locale is not None and locale in Config.LANGUAGES:
         return locale
     return request.accept_languages.best_match(app.config['LANGUAGES'])
+
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port="5000")
