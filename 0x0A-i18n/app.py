@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
+from datetime import datetime
 from flask import Flask, g, render_template, request
-from flask_babel import Babel, gettext
+from flask_babel import Babel, format_datetime, gettext
 from pytz import UnknownTimeZoneError, timezone
+import l18n
 app = Flask(__name__)
 babel = Babel(app)
 users = {
@@ -31,11 +33,14 @@ def index():
     if logged_in:
         logged_in_as = gettext(
             u"logged_in_as", username=g.user.get("name"))
+    now = format_datetime(datetime.now())
     return render_template("index.html", logged_in=logged_in,
                            logged_in_as=logged_in_as, home_title=gettext(
                                u"home_title"),
                            home_header=gettext(u"home_header"),
-                           not_logged_in=gettext(u"not_logged_in"))
+                           not_logged_in=gettext(u"not_logged_in"),
+                           current_time_is=gettext(u"current_time_is",
+                                                   current_time=now))
 
 
 @babel.localeselector
@@ -47,6 +52,8 @@ def get_locale():
         user_locale = g.user.get("locale")
         if user_locale is not None and user_locale in Config.LANGUAGES:
             return user_locale
+    # if request.accept_languages is not None:
+    # return request.accept_languages.best_match(app.config['LANGUAGES'])
     header_locale = request.headers.get("Accept-Language")
     if header_locale is not None and header_locale in Config.LANGUAGES:
         return header_locale
