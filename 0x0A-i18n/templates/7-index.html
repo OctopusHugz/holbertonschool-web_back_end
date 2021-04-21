@@ -1,0 +1,10 @@
+<title>{{home_title}}</title>
+
+<h1>{{home_header}}</h1>
+
+
+{% if logged_in %}
+<p>{{logged_in_as}}</p>
+{% else %}
+<p>{{not_logged_in}}</p>
+{% endif %}
