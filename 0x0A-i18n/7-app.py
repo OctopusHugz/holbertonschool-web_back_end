@@ -22,7 +22,7 @@ app.config.from_object(Config)
 
 @app.route('/')
 def index():
-    return render_template("4-index.html", home_title=gettext(u"home_title"),
+    return render_template("7-index.html", home_title=gettext(u"home_title"),
                            home_header=gettext(u"home_header"))
 
 
