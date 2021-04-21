@@ -39,9 +39,19 @@ def index():
 
 @babel.localeselector
 def get_locale():
-    locale = request.args.get("locale")
-    if locale is not None and locale in Config.LANGUAGES:
-        return locale
+    # Locale from URL parameters
+    url_locale = request.args.get("locale")
+    if url_locale is not None and url_locale in Config.LANGUAGES:
+        return url_locale
+    # Locale from user settings
+    user_locale = g.user.get("locale")
+    if user_locale is not None and user_locale in Config.LANGUAGES:
+        return user_locale
+    # Locale from request header
+    header_locale = request.headers.get("Accept-Language")
+    if header_locale is not None and header_locale in Config.LANGUAGES:
+        return header_locale
+    # Default locale
     return request.accept_languages.best_match(app.config['LANGUAGES'])
 
 
@@ -56,6 +66,7 @@ def before_request():
         user_id = int(user_id)
     g.user_id = user_id
     g.user = get_user(user_id)
+    g.locale = get_locale()
 
 
 if __name__ == "__main__":
