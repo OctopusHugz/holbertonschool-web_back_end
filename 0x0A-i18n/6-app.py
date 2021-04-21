@@ -30,7 +30,7 @@ def index():
     if logged_in:
         logged_in_as = gettext(
             u"logged_in_as", username=g.user.get("name"))
-    return render_template("5-index.html", logged_in=logged_in,
+    return render_template("6-index.html", logged_in=logged_in,
                            logged_in_as=logged_in_as, home_title=gettext(
                                u"home_title"),
                            home_header=gettext(u"home_header"),
@@ -39,19 +39,16 @@ def index():
 
 @babel.localeselector
 def get_locale():
-    # Locale from URL parameters
     url_locale = request.args.get("locale")
     if url_locale is not None and url_locale in Config.LANGUAGES:
         return url_locale
-    # Locale from user settings
-    user_locale = g.user.get("locale")
-    if user_locale is not None and user_locale in Config.LANGUAGES:
-        return user_locale
-    # Locale from request header
+    if g.user is not None:
+        user_locale = g.user.get("locale")
+        if user_locale is not None and user_locale in Config.LANGUAGES:
+            return user_locale
     header_locale = request.headers.get("Accept-Language")
     if header_locale is not None and header_locale in Config.LANGUAGES:
         return header_locale
-    # Default locale
     return Config.BABEL_DEFAULT_LOCALE
 
 
