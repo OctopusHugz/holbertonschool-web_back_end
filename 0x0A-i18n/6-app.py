@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from flask import Flask, render_template, request
+from flask import Flask, g, render_template, request
 from flask_babel import Babel, gettext
 app = Flask(__name__)
 babel = Babel(app)
@@ -22,8 +22,19 @@ app.config.from_object(Config)
 
 @app.route('/')
 def index():
-    return render_template("6-index.html", home_title=gettext(u"home_title"),
-                           home_header=gettext(u"home_header"))
+    if g.user_id in users.keys():
+        logged_in = True
+    else:
+        logged_in = False
+    logged_in_as = gettext(u"logged_in_as", username=None)
+    if logged_in:
+        logged_in_as = gettext(
+            u"logged_in_as", username=g.user.get("name"))
+    return render_template("5-index.html", logged_in=logged_in,
+                           logged_in_as=logged_in_as, home_title=gettext(
+                               u"home_title"),
+                           home_header=gettext(u"home_header"),
+                           not_logged_in=gettext(u"not_logged_in"))
 
 
 @babel.localeselector
@@ -32,6 +43,19 @@ def get_locale():
     if locale is not None and locale in Config.LANGUAGES:
         return locale
     return request.accept_languages.best_match(app.config['LANGUAGES'])
+
+
+def get_user(user_id):
+    return users.get(user_id)
+
+
+@app.before_request
+def before_request():
+    user_id = request.args.get("login_as")
+    if user_id is not None:
+        user_id = int(user_id)
+    g.user_id = user_id
+    g.user = get_user(user_id)
 
 
 if __name__ == "__main__":
