@@ -70,16 +70,13 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
     @classmethod
     def side_effect(cls, *args):
         """ Checks url for validity """
+        mock_response = Mock(ok=True)
+        cls.my_patcher.return_value = mock_response
         if args[0].endswith("google"):
-            mock_response = Mock(ok=True)
             mock_response.json.return_value = cls.org_payload
-            cls.my_patcher.return_value = mock_response
-            return mock_response
         elif args[0].endswith("/repos"):
-            mock_response = Mock(ok=True)
             mock_response.json.return_value = cls.repos_payload
-            cls.my_patcher.return_value = mock_response
-            return mock_response
+        return mock_response
 
     def test_public_repos(self):
         """ Test function for public_repos """
