@@ -3,6 +3,7 @@
 from client import GithubOrgClient
 from fixtures import TEST_PAYLOAD
 from parameterized import parameterized, parameterized_class
+from requests import Response
 from unittest.mock import Mock, PropertyMock, patch
 import unittest
 
@@ -70,7 +71,7 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
     @classmethod
     def side_effect(cls, *args):
         """ Checks url for validity """
-        mock_response = Mock(ok=True)
+        mock_response = Mock(spec_set=Response)
         cls.my_patcher.return_value = mock_response
         if args[0].endswith("google"):
             mock_response.json.return_value = cls.org_payload
