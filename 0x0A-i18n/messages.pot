@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-04-21 16:58+0000\n"
+"POT-Creation-Date: 2021-04-22 16:44+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,24 +17,27 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.9.0\n"
 
-#: 3-app.py:19 4-app.py:19 5-app.py:34 6-app.py:34 7-app.py:35 app.py:35
+#: templates/3-index.html:1 templates/4-index.html:1 templates/5-index.html:1
+#: templates/6-index.html:1 templates/7-index.html:1 templates/index.html:1
 msgid "home_title"
 msgstr ""
 
-#: 3-app.py:20 4-app.py:20 5-app.py:36 6-app.py:36 7-app.py:37 app.py:37
+#: templates/3-index.html:3 templates/4-index.html:3 templates/5-index.html:3
+#: templates/6-index.html:3 templates/7-index.html:3 templates/index.html:3
 msgid "home_header"
 msgstr ""
 
-#: 5-app.py:29 5-app.py:32 6-app.py:29 6-app.py:32 7-app.py:30 7-app.py:33
-#: app.py:30 app.py:33
+#: templates/5-index.html:7 templates/6-index.html:7 templates/7-index.html:7
+#: templates/index.html:7
 msgid "logged_in_as"
 msgstr ""
 
-#: 5-app.py:37 6-app.py:37 7-app.py:38 app.py:38
+#: templates/5-index.html:9 templates/6-index.html:9 templates/7-index.html:9
+#: templates/index.html:9
 msgid "not_logged_in"
 msgstr ""
 
-#: app.py:39
+#: templates/index.html:11
 msgid "current_time_is"
 msgstr ""
 
