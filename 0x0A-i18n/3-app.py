@@ -2,6 +2,7 @@
 """ This module creates a Flask app """
 from flask import Flask, render_template, request
 from flask_babel import Babel, gettext
+from typing import Text
 app = Flask(__name__)
 babel = Babel(app)
 
@@ -17,14 +18,14 @@ app.config.from_object(Config)
 
 
 @app.route('/')
-def index():
+def index() -> Text:
     """ Returns the index.html page """
     return render_template("3-index.html", home_title=gettext(u"home_title"),
                            home_header=gettext(u"home_header"))
 
 
 @babel.localeselector
-def get_locale():
+def get_locale() -> str:
     """ Gets the locale from request.accept_languages """
     return request.accept_languages.best_match(app.config['LANGUAGES'])
 
