@@ -17,3 +17,4 @@ index.html
 node_modules
 *.db
 *.pyc
+messages.pot
