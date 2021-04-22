@@ -4,7 +4,6 @@ from datetime import datetime
 from flask import Flask, g, render_template, request
 from flask_babel import Babel, format_datetime, gettext
 from pytz import UnknownTimeZoneError, timezone
-import l18n
 app = Flask(__name__)
 babel = Babel(app)
 users = {
