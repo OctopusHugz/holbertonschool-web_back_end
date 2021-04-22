@@ -29,7 +29,3 @@ def index() -> Text:
 def get_locale() -> str:
     """ Gets the locale from request.accept_languages """
     return request.accept_languages.best_match(app.config['LANGUAGES'])
-
-
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port="5000")
