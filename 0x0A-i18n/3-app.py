@@ -21,8 +21,8 @@ app.config.from_object(Config)
 @app.route('/')
 def index() -> Text:
     """ Returns the index.html page """
-    return render_template("3-index.html", home_title=gettext(u"home_title"),
-                           home_header=gettext(u"home_header"))
+    return render_template("3-index.html", home_title=gettext(u'home_title'),
+                           home_header=gettext(u'home_header'))
 
 
 @babel.localeselector
