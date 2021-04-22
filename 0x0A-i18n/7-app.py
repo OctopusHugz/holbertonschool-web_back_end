@@ -40,13 +40,9 @@ def get_locale():
         user_locale = g.user.get("locale")
         if user_locale is not None and user_locale in Config.LANGUAGES:
             return user_locale
-    if request.accept_languages is not None:
-        return request.accept_languages.best_match(app.config['LANGUAGES'])
-
-    # header_locale = request.headers.get("Accept-Language").split("-")[0]
-    # if header_locale is not None and header_locale in Config.LANGUAGES:
-    #     print(header_locale)
-    #     return header_locale
+    best_match = request.accept_languages.best_match(app.config['LANGUAGES'])
+    if best_match is not None:
+        return best_match
     return Config.BABEL_DEFAULT_LOCALE
 
 
