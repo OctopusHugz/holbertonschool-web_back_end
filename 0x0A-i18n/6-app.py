@@ -25,19 +25,7 @@ app.config.from_object(Config)
 @app.route('/')
 def index():
     """ Returns the index.html page """
-    if g.user_id in users.keys():
-        logged_in = True
-    else:
-        logged_in = False
-    logged_in_as = gettext(u"logged_in_as", username=None)
-    if logged_in:
-        logged_in_as = gettext(
-            u"logged_in_as", username=g.user.get("name"))
-    return render_template("6-index.html", logged_in=logged_in,
-                           logged_in_as=logged_in_as, home_title=gettext(
-                               u"home_title"),
-                           home_header=gettext(u"home_header"),
-                           not_logged_in=gettext(u"not_logged_in"))
+    return render_template("6-index.html")
 
 
 @babel.localeselector
