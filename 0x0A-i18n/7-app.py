@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """ This module creates a Flask app """
 from flask import Flask, g, render_template, request
-from flask_babel import Babel, gettext
+from flask_babel import Babel
 from pytz import UnknownTimeZoneError, timezone
 app = Flask(__name__)
 babel = Babel(app)
@@ -26,19 +26,7 @@ app.config.from_object(Config)
 @app.route('/')
 def index():
     """ Returns the index.html page """
-    if g.user_id in users.keys():
-        logged_in = True
-    else:
-        logged_in = False
-    logged_in_as = gettext(u"logged_in_as", username=None)
-    if logged_in:
-        logged_in_as = gettext(
-            u"logged_in_as", username=g.user.get("name"))
-    return render_template("7-index.html", logged_in=logged_in,
-                           logged_in_as=logged_in_as, home_title=gettext(
-                               u"home_title"),
-                           home_header=gettext(u"home_header"),
-                           not_logged_in=gettext(u"not_logged_in"))
+    return render_template("7-index.html")
 
 
 @babel.localeselector
@@ -52,11 +40,13 @@ def get_locale():
         user_locale = g.user.get("locale")
         if user_locale is not None and user_locale in Config.LANGUAGES:
             return user_locale
-    # if request.accept_languages is not None:
-    # return request.accept_languages.best_match(app.config['LANGUAGES'])
-    header_locale = request.headers.get("Accept-Language")
-    if header_locale is not None and header_locale in Config.LANGUAGES:
-        return header_locale
+    if request.accept_languages is not None:
+        return request.accept_languages.best_match(app.config['LANGUAGES'])
+
+    # header_locale = request.headers.get("Accept-Language").split("-")[0]
+    # if header_locale is not None and header_locale in Config.LANGUAGES:
+    #     print(header_locale)
+    #     return header_locale
     return Config.BABEL_DEFAULT_LOCALE
 
 
@@ -71,7 +61,6 @@ def before_request():
     user_id = request.args.get("login_as")
     if user_id is not None:
         user_id = int(user_id)
-    g.user_id = user_id
     g.user = get_user(user_id)
     g.locale = get_locale()
     g.timezone = get_timezone()
