@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+""" This module creates a Flask app """
 from flask import Flask, g, render_template, request
 from flask_babel import Babel, gettext
 app = Flask(__name__)
@@ -12,6 +13,7 @@ users = {
 
 
 class Config(object):
+    """ Config class for babel """
     LANGUAGES = ["en", "fr"]
     BABEL_DEFAULT_LOCALE = "en"
     BABEL_DEFAULT_TIMEZONE = "UTC"
@@ -22,6 +24,7 @@ app.config.from_object(Config)
 
 @app.route('/')
 def index():
+    """ Returns the index.html page """
     if g.user_id in users.keys():
         logged_in = True
     else:
@@ -39,6 +42,8 @@ def index():
 
 @babel.localeselector
 def get_locale():
+    """ Gets locale from query string, user settings, request.headers
+    or returns the default from babel config """
     url_locale = request.args.get("locale")
     if url_locale is not None and url_locale in Config.LANGUAGES:
         return url_locale
@@ -46,6 +51,8 @@ def get_locale():
         user_locale = g.user.get("locale")
         if user_locale is not None and user_locale in Config.LANGUAGES:
             return user_locale
+    # if request.accept_languages is not None:
+    # return request.accept_languages.best_match(app.config['LANGUAGES'])
     header_locale = request.headers.get("Accept-Language")
     if header_locale is not None and header_locale in Config.LANGUAGES:
         return header_locale
@@ -53,11 +60,13 @@ def get_locale():
 
 
 def get_user(user_id):
+    """ Returns the user based on user_id """
     return users.get(user_id)
 
 
 @app.before_request
 def before_request():
+    """ Checks for login_as passed in query string and sets attributes """
     user_id = request.args.get("login_as")
     if user_id is not None:
         user_id = int(user_id)

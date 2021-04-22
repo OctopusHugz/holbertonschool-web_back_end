@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+""" This module creates a Flask app """
 from datetime import datetime
 from flask import Flask, g, render_template, request
 from flask_babel import Babel, format_datetime, gettext
@@ -15,6 +16,7 @@ users = {
 
 
 class Config(object):
+    """ Config class for babel """
     LANGUAGES = ["en", "fr"]
     BABEL_DEFAULT_LOCALE = "en"
     BABEL_DEFAULT_TIMEZONE = "UTC"
@@ -25,6 +27,7 @@ app.config.from_object(Config)
 
 @app.route('/')
 def index():
+    """ Returns the index.html page """
     if g.user_id in users.keys():
         logged_in = True
     else:
@@ -45,6 +48,8 @@ def index():
 
 @babel.localeselector
 def get_locale():
+    """ Gets locale from query string, user settings, request.headers
+    or returns the default from babel config """
     url_locale = request.args.get("locale")
     if url_locale is not None and url_locale in Config.LANGUAGES:
         return url_locale
@@ -61,11 +66,13 @@ def get_locale():
 
 
 def get_user(user_id):
+    """ Returns the user based on user_id """
     return users.get(user_id)
 
 
 @app.before_request
 def before_request():
+    """ Checks for login_as passed in query string and sets attributes """
     user_id = request.args.get("login_as")
     if user_id is not None:
         user_id = int(user_id)
@@ -77,6 +84,8 @@ def before_request():
 
 @babel.timezoneselector
 def get_timezone():
+    """ Gets timezone from query string, user settings, or returns default from
+    babel config """
     url_timezone = request.args.get("timezone")
     if url_timezone is not None:
         try:
@@ -97,3 +106,6 @@ def get_timezone():
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port="5000")
+
+# messages.mo isn't listed in files required, does that need to be original
+# file from running babel stuff the first time in task 3?
