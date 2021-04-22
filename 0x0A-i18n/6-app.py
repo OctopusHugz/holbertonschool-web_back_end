@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """ This module creates a Flask app """
 from flask import Flask, g, render_template, request
-from flask_babel import Babel, gettext
+from flask_babel import Babel
 app = Flask(__name__)
 babel = Babel(app)
 users = {
@@ -60,7 +60,6 @@ def before_request():
     user_id = request.args.get("login_as")
     if user_id is not None:
         user_id = int(user_id)
-    g.user_id = user_id
     g.user = get_user(user_id)
     g.locale = get_locale()
 
