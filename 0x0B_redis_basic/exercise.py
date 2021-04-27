@@ -20,8 +20,6 @@ def replay(func: Callable) -> None:
         output_str = f"{output.decode()}"
         print(input_str + output_str)
 
-    # for i in range(self._redis.llen(input_list_key)):
-
 
 def count_calls(method: Callable) -> Callable:
     """ Counts how many times methods of Cache class are called """
