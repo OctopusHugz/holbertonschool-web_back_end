@@ -60,9 +60,10 @@ class Cache():
     def store(self, data: Union[str, bytes, int, float]) -> str:
         """ Generates a random key with uuid and stores data in Redis using
         that random key """
-        key = str(uuid4())
-        self._redis.set(key, data)
-        return key
+        if type(data) in [str, bytes, int, float]:
+            key = str(uuid4())
+            self._redis.set(key, data)
+            return key
 
     def get(self, key: str, fn: Callable = None) -> Union[str, None]:
         """ Gets the value of key from Redis, if it exists """
