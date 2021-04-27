@@ -50,7 +50,7 @@ def call_history(method: Callable) -> Callable:
 class Cache():
     """ This is an instance of the Cache class """
 
-    def __init__(self) -> None:
+    def __init__(self):
         """ Creates an instance of the Cache class """
         self._redis = Redis()
         self._redis.flushdb()
