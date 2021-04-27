@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """ This module creates a Cache class and interacts with Redis """
 from functools import wraps
-from typing import Any, Callable, Union
+from typing import Any, Callable, Optional, Union
 from uuid import uuid4
 import redis
 
@@ -64,7 +64,7 @@ class Cache():
         self._redis.set(key, data)
         return key
 
-    def get(self, key: str, fn: Callable = None) -> Any:
+    def get(self, key: str, fn: Optional[Callable] = None) -> Any:
         """ Gets the value of key from Redis, if it exists """
         if fn is not None:
             return fn(self._redis.get(key))
