@@ -71,3 +71,11 @@ class Cache():
             return fn(self._redis.get(key))
         else:
             return self._redis.get(key)
+
+    def get_str(self, key: str) -> str:
+        """ Gets a bytes string and typecasts return to a str """
+        return self.get(key, str)
+
+    def get_int(self, key: str) -> int:
+        """ Gets a bytes string and typecasts return to an int """
+        return self.get(key, int)
