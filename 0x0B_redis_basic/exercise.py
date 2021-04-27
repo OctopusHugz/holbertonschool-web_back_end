@@ -6,7 +6,7 @@ from typing import Callable, Union
 from uuid import uuid4
 
 
-def replay(func: Callable):
+def replay(func: Callable) -> None:
     """ Displays the history of calls of a particular function """
     self = func.__self__
     input_list_key = func.__qualname__ + ":inputs"
