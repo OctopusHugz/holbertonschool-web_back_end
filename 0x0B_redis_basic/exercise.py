@@ -63,6 +63,7 @@ class Cache():
         if type(data) in [str, bytes, int, float]:
             key = str(uuid4())
             self._redis.set(key, data)
+            self._redis.save()
             return key
         return ""
 
