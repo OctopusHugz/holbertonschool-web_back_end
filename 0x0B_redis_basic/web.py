@@ -23,7 +23,7 @@ def count_cache(method: Callable) -> Callable:
 
 
 @count_cache
-def get_page(url: str):
+def get_page(url: str) -> str:
     """ Uses requests to obtain and return the HTML content of URL """
     # track how many times a particular URL was accessed in the key
     # and cache the result with an expiration time of 10 seconds
