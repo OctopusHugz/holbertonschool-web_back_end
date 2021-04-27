@@ -15,10 +15,12 @@ def replay(func: Callable) -> None:
     inputs = self._redis.lrange(input_list_key, 0, -1)
     outputs = self._redis.lrange(output_list_key, 0, -1)
     print(f"{func.__qualname__} was called {call_count} times:")
-    for i in range(self._redis.llen(input_list_key)):
-        input_str = f"{func.__qualname__}(*{inputs[i].decode()}) -> "
-        output_str = f"{outputs[i].decode()}"
+    for input, output in zip(inputs, outputs):
+        input_str = f"{func.__qualname__}(*{input.decode()}) -> "
+        output_str = f"{output.decode()}"
         print(input_str + output_str)
+
+    # for i in range(self._redis.llen(input_list_key)):
 
 
 def count_calls(method: Callable) -> Callable:
