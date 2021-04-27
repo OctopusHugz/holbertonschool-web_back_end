@@ -6,6 +6,21 @@ from typing import Callable, Union
 from uuid import uuid4
 
 
+def replay(func: Callable):
+    """ Displays the history of calls of a particular function """
+    self = func.__self__
+    input_list_key = func.__qualname__ + ":inputs"
+    output_list_key = func.__qualname__ + ":outputs"
+    call_count = self._redis.get(func.__qualname__).decode()
+    inputs = self._redis.lrange(input_list_key, 0, -1)
+    outputs = self._redis.lrange(output_list_key, 0, -1)
+    print(f"{func.__qualname__} was called {call_count} times:")
+    for i in range(self._redis.llen(input_list_key)):
+        input_str = f"{func.__qualname__}(*{inputs[i].decode()}) -> "
+        output_str = f"{outputs[i].decode()}"
+        print(input_str + output_str)
+
+
 def count_calls(method: Callable) -> Callable:
     """ Counts how many times methods of Cache class are called """
     @wraps(method)
