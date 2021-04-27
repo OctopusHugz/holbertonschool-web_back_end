@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """ This module creates a Cache class and interacts with Redis """
 from functools import wraps
-from redis import Redis
 from typing import Callable, Union
 from uuid import uuid4
+import redis
 
 
 def replay(func: Callable) -> None:
@@ -52,7 +52,7 @@ class Cache():
 
     def __init__(self):
         """ Creates an instance of the Cache class """
-        self._redis = Redis()
+        self._redis = redis.Redis()
         self._redis.flushdb()
 
     @call_history
