@@ -6,7 +6,6 @@ import redis
 import requests
 
 r = redis.Redis()
-# r.flushdb()
 
 
 def count_cache(method: Callable) -> Callable:
