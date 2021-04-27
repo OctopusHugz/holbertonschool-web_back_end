@@ -69,9 +69,6 @@ class Cache():
     def get(self, key: str, fn: Callable = None) -> Any:
         """ Gets the value of key from Redis, if it exists """
         if fn is not None:
-            value = fn(self._redis.get(key))
+            return fn(self._redis.get(key))
         else:
-            value = self._redis.get(key)
-        if value is None:
-            return "(nil)"
-        return value
+            return self._redis.get(key)
