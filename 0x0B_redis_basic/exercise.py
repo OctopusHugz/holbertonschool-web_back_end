@@ -64,6 +64,7 @@ class Cache():
             key = str(uuid4())
             self._redis.set(key, data)
             return key
+        return ""
 
     def get(self, key: str, fn: Callable = None) -> Union[str, None]:
         """ Gets the value of key from Redis, if it exists """
