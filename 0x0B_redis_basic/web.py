@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """ This module implements an expiring web cache and tracker """
 from functools import wraps
-from redis import Redis
 from typing import Callable
+import redis
 import requests
 
-r = Redis()
+r = redis.Redis()
 # r.flushdb()
 
 
@@ -25,10 +25,5 @@ def count_cache(method: Callable) -> Callable:
 @count_cache
 def get_page(url: str) -> str:
     """ Uses requests to obtain and return the HTML content of URL """
-    # track how many times a particular URL was accessed in the key
-    # and cache the result with an expiration time of 10 seconds
     response = requests.get(url)
     return response.text
-
-
-# get_page("http://www.google.com")
