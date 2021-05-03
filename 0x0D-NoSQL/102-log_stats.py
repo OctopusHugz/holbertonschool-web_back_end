@@ -20,3 +20,17 @@ print(f"\tmethod PUT: {put_count}")
 print(f"\tmethod PATCH: {patch_count}")
 print(f"\tmethod DELETE: {delete_count}")
 print(f"{status_count} status check")
+print("IPs:")
+
+pipeline = [
+    {"$group": {
+        "_id": "$ip",
+        "count": {"$sum": 1}}},
+    {"$sort": {"count": -1}},
+    {"$limit": 10}
+]
+ip_list = collection.aggregate(pipeline)
+for ip in ip_list:
+    ip_addr = ip.get("_id")
+    ip_count = ip.get("count")
+    print(f"\t{ip_addr}: {ip_count}")
