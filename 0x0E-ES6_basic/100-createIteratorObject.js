@@ -9,11 +9,10 @@ export default function createIteratorObject(report) {
       return {
         next() {
           if (count < Object.keys(report.allEmployees).length + 1) {
-            count++;
+            count += 1;
             return { done: false, value: employeeArray[count - 1] };
-          } else {
-            return { done: true, value: undefined };
           }
+          return { done: true, value: undefined };
         },
       };
     },
