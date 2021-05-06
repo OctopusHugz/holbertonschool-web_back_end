@@ -8,7 +8,7 @@ export default function createIteratorObject(report) {
       let count = 0;
       return {
         next() {
-          if (count < Object.keys(report.allEmployees).length + 1) {
+          if (count < employeeArray.length) {
             count += 1;
             return { done: false, value: employeeArray[count - 1] };
           }
