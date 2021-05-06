@@ -11,3 +11,5 @@ export default function iterateThroughObject(reportWithIterator) {
   }
   return returnString;
 }
+
+module.exports = iterateThroughObject;
