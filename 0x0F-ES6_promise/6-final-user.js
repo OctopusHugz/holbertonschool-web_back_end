@@ -2,17 +2,6 @@ import signUpUser from './4-user-promise';
 import uploadPhoto from './5-photo-reject';
 
 export default function handleProfileSignup(firstName, lastName, fileName) {
-  // return Promise.allSettled([signUpUser(firstName, lastName), uploadPhoto(fileName)]).then((results) => (results));
-
-  // let count = 0;
-  // const newArray = [];
-  // const array = Promise.allSettled([signUpUser(firstName, lastName), uploadPhoto(fileName)]);
-  // array.then((results) => results.forEach((result) => {
-  //   if (result.status === 'fulfilled') { newArray.push({ status: result.status, value: result.value }); } else { newArray.push({ status: result.status, value: `Error: ${result.reason.message}` }); }
-  //   count += 1;
-  //   if (count === results.length) { return newArray; }
-  // }));
-  let count = 0;
   return Promise.allSettled([signUpUser(firstName, lastName), uploadPhoto(fileName)])
     .then(
       (results) => {
@@ -22,9 +11,5 @@ export default function handleProfileSignup(firstName, lastName, fileName) {
         }
         return newArray;
       },
-    // (results) => results.forEach((result) => {
-    //   if (result.status === 'fulfilled') { newArray.push({ status: result.status, value: result.value }); } else { newArray.push({ status: result.status, value: `Error: ${result.reason.message}` }); }
-    //   count += 1;
-    // }),
     );
 }
