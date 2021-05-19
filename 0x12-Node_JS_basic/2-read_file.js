@@ -1,12 +1,10 @@
 const fs = require('fs');
 
 function countStudents(path) {
-  let data;
-  try {
-    data = fs.readFileSync(path, 'utf8');
-  } catch (err) {
+  if (!fs.existsSync(path)) {
     throw Error('Cannot load the database');
   }
+  const data = fs.readFileSync(path, 'utf8');
   const splitStudents = data.split('\n')
     .map((student) => student.split(','))
     .filter((student) => student.length === 4 && student[0] !== 'firstname')
