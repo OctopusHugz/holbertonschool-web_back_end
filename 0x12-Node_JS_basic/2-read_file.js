@@ -5,7 +5,7 @@ function countStudents(path) {
     throw Error('Cannot load the database');
   }
   const data = fs.readFileSync(path, 'utf8');
-  const splitStudents = data.split('\n')
+  const students = data.split('\n')
     .map((student) => student.split(','))
     .filter((student) => student.length === 4 && student[0] !== 'firstname')
     .map((student) => ({
@@ -14,13 +14,13 @@ function countStudents(path) {
       age: student[2],
       field: student[3],
     }));
-  const csStudents = splitStudents
+  const csStudents = students
     .filter((student) => student.field === 'CS')
     .map((student) => student.firstName);
-  const sweStudents = splitStudents
+  const sweStudents = students
     .filter((student) => student.field === 'SWE')
     .map((student) => student.firstName);
-  console.log(`Number of students: ${splitStudents.length}`);
+  console.log(`Number of students: ${students.length}`);
   console.log(`Number of students in CS: ${csStudents.length}. List: ${csStudents.join(', ')}`);
   console.log(`Number of students in SWE: ${sweStudents.length}. List: ${sweStudents.join(', ')}`);
 }
