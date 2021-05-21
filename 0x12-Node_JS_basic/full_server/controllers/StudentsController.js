@@ -2,14 +2,32 @@ import readDatabase from '../utils';
 
 class StudentsController {
   static getAllStudents(request, response) {
-    response.statusCode = 200;
-    // await readDatabase();
+    readDatabase(process.argv[2])
+      .then((value) => {
+        response.statusCode = 200;
+        response.write('This is the list of our students\n');
+        response.write(`Number of students in CS: ${value.csStudents.length}. List: ${value.csStudents.join(', ')}\n`);
+        response.end(`Number of students in SWE: ${value.sweStudents.length}. List: ${value.sweStudents.join(', ')}`);
+      })
+      .catch(() => {
+        response.status(500).send('Cannot load the database');
+      });
   }
 
   static getAllStudentsByMajor(request, response) {
-    response.statusCode = 200;
     const { major } = request.params;
-    // await readDatabase();
+    if (['CS', 'SWE'].indexOf(major) === -1) { response.status(500).send('Major parameter must be CS or SWE'); }
+
+    readDatabase(process.argv[2])
+      .then((value) => {
+        response.statusCode = 200;
+        if (major === 'CS') { response.end(`List: ${value.csStudents.join(', ')}`); } else {
+          response.end(`List: ${value.sweStudents.join(', ')}`);
+        }
+      })
+      .catch(() => {
+        response.status(500).send('Major parameter must be CS or SWE');
+      });
   }
 }
 
