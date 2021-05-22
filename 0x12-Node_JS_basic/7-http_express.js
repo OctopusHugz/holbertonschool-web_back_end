@@ -9,21 +9,17 @@ app.get('/', (req, res) => {
   res.send('Hello Holberton School!');
 });
 
-app.get('/students', async (req, res) => {
+app.get('/students', (req, res) => {
   res.statusCode = 200;
   res.setHeader('Content-Type', 'text/plain');
-  await countStudents(process.argv[2]).then((value) => {
-    res.write('This is the list of our students\n');
-    res.write(`Number of students: ${value.students.length}\n`);
-    res.write(`Number of students in CS: ${value.csStudents.length}. List: ${value.csStudents.join(', ')}\n`);
-    res.write(`Number of students in SWE: ${value.sweStudents.length}. List: ${value.sweStudents.join(', ')}`);
-    res.end();
-  }).catch((err) => {
-    res.statusCode = 404;
-    res.statusMessage = err.message;
-    res.write('This is the list of our students\n');
-    res.end(`${err.message}`);
-  });
+  countStudents(process.argv[2])
+    .then((value) => {
+      res.write('This is the list of our students\n');
+      res.write(`Number of students: ${value.students.length}\n`);
+      res.write(`Number of students in CS: ${value.csStudents.length}. List: ${value.csStudents.join(', ')}\n`);
+      res.end(`Number of students in SWE: ${value.sweStudents.length}. List: ${value.sweStudents.join(', ')}`);
+    })
+    .catch((err) => res.status(404).send(`This is the list of our students\n${err.message}`));
 });
 
 app.listen(1245);
