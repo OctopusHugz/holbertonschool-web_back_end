@@ -9,12 +9,7 @@ class StudentsController {
         response.write(`Number of students in CS: ${value.csStudents.length}. List: ${value.csStudents.join(', ')}\n`);
         response.end(`Number of students in SWE: ${value.sweStudents.length}. List: ${value.sweStudents.join(', ')}`);
       })
-      .catch((err) => {
-        response.status(500).send(err.message);
-        // response.statusCode = 500;
-        // response.statusMessage = err.message;
-        // response.end(`${err.message}`);
-      });
+      .catch((err) => response.status(500).send(err.message));
   }
 
   static getAllStudentsByMajor(request, response) {
@@ -28,12 +23,7 @@ class StudentsController {
           response.end(`List: ${value.sweStudents.join(', ')}`);
         }
       })
-      .catch((err) => {
-        response.status(500).send(err.message);
-        // response.statusCode = 500;
-        // response.statusMessage = err.message;
-        // response.end(`${err.message}`);
-      });
+      .catch((err) => response.status(500).send(err.message));
   }
 }
 
