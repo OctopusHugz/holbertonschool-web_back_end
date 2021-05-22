@@ -13,7 +13,7 @@ const app = http.createServer(async (req, res) => {
       res.write(`Number of students in CS: ${value.csStudents.length}. List: ${value.csStudents.join(', ')}\n`);
       res.end(`Number of students in SWE: ${value.sweStudents.length}. List: ${value.sweStudents.join(', ')}`);
     }).catch((err) => {
-      res.statusCode = 500;
+      res.statusCode = 404;
       res.end(err.message);
     });
   }
