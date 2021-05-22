@@ -7,10 +7,6 @@ async function countStudents(path) {
   } catch (error) {
     throw new Error('Cannot load the database');
   }
-  // if (!fs.existsSync(path)) {
-  //   throw new Error('Cannot load the database');
-  // }
-  // const data = await fs.promises.readFile(path, 'utf8');
   const students = data.split('\n')
     .map((student) => student.split(','))
     .filter((student) => student.length === 4 && student[0] !== 'firstname')
