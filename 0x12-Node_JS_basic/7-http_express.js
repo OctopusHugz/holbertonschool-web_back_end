@@ -18,7 +18,12 @@ app.get('/students', async (req, res) => {
     res.write(`Number of students in CS: ${value.csStudents.length}. List: ${value.csStudents.join(', ')}\n`);
     res.write(`Number of students in SWE: ${value.sweStudents.length}. List: ${value.sweStudents.join(', ')}`);
     res.end();
-  }).catch((err) => res.send(err.message));
+  }).catch((err) => {
+    res.statusCode = 404;
+    res.statusMessage = err.message;
+    res.write('This is the list of our students\n');
+    res.end(`${err.message}`);
+  });
 });
 
 app.listen(1245);
