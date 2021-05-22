@@ -1,10 +1,14 @@
 const http = require('http');
+const helpers = require('./helpers');
 
-const app = http.createServer((req, res) => {
-  res.statusCode = 200;
-  res.setHeader('Content-Type', 'text/plain');
-  res.end('Hello Holberton School!');
+const { writeIndex } = helpers;
+
+const hostname = '127.0.0.1';
+const port = 1245;
+
+const app = http.createServer((req, res) => writeIndex(res));
+
+app.listen(port, hostname, () => {
+  console.log(`Server running at http://${hostname}:${port}/`);
 });
-
-app.listen(1245);
 module.exports = app;
