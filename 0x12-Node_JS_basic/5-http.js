@@ -7,15 +7,20 @@ const app = http.createServer(async (req, res) => {
   const { url } = req;
   if (url === '/') { res.end('Hello Holberton School!'); }
   if (url === '/students') {
-    await countStudents(process.argv[2]).then((value) => {
-      res.write('This is the list of our students\n');
-      res.write(`Number of students: ${value.students.length}\n`);
-      res.write(`Number of students in CS: ${value.csStudents.length}. List: ${value.csStudents.join(', ')}\n`);
-      res.end(`Number of students in SWE: ${value.sweStudents.length}. List: ${value.sweStudents.join(', ')}`);
-    }).catch((err) => {
+    try {
+      await countStudents(process.argv[2]).then((value) => {
+        res.write('This is the list of our students\n');
+        res.write(`Number of students: ${value.students.length}\n`);
+        res.write(`Number of students in CS: ${value.csStudents.length}. List: ${value.csStudents.join(', ')}\n`);
+        res.end(`Number of students in SWE: ${value.sweStudents.length}. List: ${value.sweStudents.join(', ')}`);
+      }).catch((err) => {
+        res.statusCode = 404;
+        res.end(err.message);
+      });
+    } catch (error) {
       res.statusCode = 404;
-      res.end(err.message);
-    });
+      res.end(error.message);
+    }
   }
 });
 
