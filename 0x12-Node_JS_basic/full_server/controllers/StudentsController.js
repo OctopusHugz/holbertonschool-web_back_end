@@ -13,7 +13,6 @@ class StudentsController {
         // response.status(500).send('Cannot load the database');
         response.statusCode = 500;
         response.statusMessage = err.message;
-        response.write('This is the list of our students\n');
         response.end(`${err.message}`);
       });
   }
@@ -33,7 +32,6 @@ class StudentsController {
         // response.status(500).send('Major parameter must be CS or SWE');
         response.statusCode = 500;
         response.statusMessage = err.message;
-        response.write('This is the list of our students\n');
         response.end(`${err.message}`);
       });
   }
