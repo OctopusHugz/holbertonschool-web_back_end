@@ -1,23 +1,27 @@
 const express = require('express');
 const countStudents = require('./3-read_file_async');
-const writeResponse = require('./helpers');
+const helpers = require('./helpers');
+
+const { writeResponse } = helpers;
+const { writeError } = helpers;
+const { writeIndex } = helpers;
+
+const hostname = '127.0.0.1';
+const port = 1245;
+const fileName = process.argv[2];
 
 const app = express();
 
-app.get('/', (req, res) => {
-  res.statusCode = 200;
-  res.setHeader('Content-Type', 'text/plain');
-  res.send('Hello Holberton School!');
-});
+app.get('/', (req, res) => writeIndex(res));
 
 app.get('/students', (req, res) => {
-  res.statusCode = 200;
-  res.setHeader('Content-Type', 'text/plain');
-  countStudents(process.argv[2])
+  countStudents(fileName)
     .then((data) => writeResponse(res, data, true))
-    .catch((err) => res.status(404).send(`This is the list of our students\n${err.message}`));
+    .catch((err) => writeError(res, err));
 });
 
-app.listen(1245);
+app.listen(port, hostname, () => {
+  console.log(`Server running at http://${hostname}:${port}/`);
+});
 
 module.exports = app;
