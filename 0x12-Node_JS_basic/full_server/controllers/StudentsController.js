@@ -10,10 +10,10 @@ class StudentsController {
         response.end(`Number of students in SWE: ${value.sweStudents.length}. List: ${value.sweStudents.join(', ')}`);
       })
       .catch((err) => {
-        // response.status(500).send('Cannot load the database');
-        response.statusCode = 500;
-        response.statusMessage = err.message;
-        response.end(`${err.message}`);
+        response.status(500).send(err.message);
+        // response.statusCode = 500;
+        // response.statusMessage = err.message;
+        // response.end(`${err.message}`);
       });
   }
 
@@ -29,10 +29,10 @@ class StudentsController {
         }
       })
       .catch((err) => {
-        // response.status(500).send('Major parameter must be CS or SWE');
-        response.statusCode = 500;
-        response.statusMessage = err.message;
-        response.end(`${err.message}`);
+        response.status(500).send(err.message);
+        // response.statusCode = 500;
+        // response.statusMessage = err.message;
+        // response.end(`${err.message}`);
       });
   }
 }
