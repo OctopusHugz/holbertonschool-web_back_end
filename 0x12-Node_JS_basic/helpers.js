@@ -21,6 +21,6 @@ function writeError(res, err) {
   res.end(`This is the list of our students\n${err.message}`);
 }
 
-module.exports = writeIndex;
-module.exports = writeResponse;
-module.exports = writeError;
+module.exports.writeIndex = writeIndex;
+module.exports.writeResponse = writeResponse;
+module.exports.writeError = writeError;
