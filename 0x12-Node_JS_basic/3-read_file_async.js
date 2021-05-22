@@ -8,6 +8,7 @@ async function countStudents(path) {
   const students = data.split('\n')
     .map((student) => student.split(','))
     .filter((student) => student.length === 4 && student[0] !== 'firstname')
+    .filter((student) => student[0] !== '""' && student[1] !== '""' && student[2] !== '""' && student[3] !== '""')
     .map((student) => ({
       firstName: student[0],
       lastName: student[1],
