@@ -20,7 +20,7 @@ const app = http.createServer((req, res) => {
       res.statusCode = 404;
       res.statusMessage = err.message;
       res.write('This is the list of our students\n');
-      res.end(`Error: ${err.message}`);
+      res.end(`${err.message}`);
     });
   }
 });
