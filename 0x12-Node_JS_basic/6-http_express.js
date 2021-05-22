@@ -10,8 +10,6 @@ const app = express();
 
 app.get('/', (req, res) => writeIndex(res));
 
-app.listen(port, hostname, () => {
-  console.log(`Server running at http://${hostname}:${port}/`);
-});
+app.listen(port, hostname, () => { console.log(`Server running at http://${hostname}:${port}/`); });
 
 module.exports = app;
