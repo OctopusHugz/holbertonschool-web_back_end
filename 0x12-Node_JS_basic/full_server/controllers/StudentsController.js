@@ -1,14 +1,10 @@
 import readDatabase from '../utils';
+import { writeResponse, writeMajorList } from '../../helpers';
 
 class StudentsController {
   static getAllStudents(request, response) {
     readDatabase(process.argv[2])
-      .then((value) => {
-        response.statusCode = 200;
-        response.write('This is the list of our students\n');
-        response.write(`Number of students in CS: ${value.csStudents.length}. List: ${value.csStudents.join(', ')}\n`);
-        response.end(`Number of students in SWE: ${value.sweStudents.length}. List: ${value.sweStudents.join(', ')}`);
-      })
+      .then((data) => writeResponse(response, data, false))
       .catch((err) => response.status(500).send(err.message));
   }
 
@@ -17,12 +13,7 @@ class StudentsController {
     if (['CS', 'SWE'].indexOf(major) === -1) { response.status(500).send('Major parameter must be CS or SWE'); }
 
     readDatabase(process.argv[2])
-      .then((value) => {
-        response.statusCode = 200;
-        if (major === 'CS') { response.end(`List: ${value.csStudents.join(', ')}`); } else {
-          response.end(`List: ${value.sweStudents.join(', ')}`);
-        }
-      })
+      .then((data) => writeMajorList(response, data, major))
       .catch((err) => response.status(500).send(err.message));
   }
 }
