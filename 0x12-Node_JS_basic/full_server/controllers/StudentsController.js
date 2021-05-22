@@ -9,8 +9,12 @@ class StudentsController {
         response.write(`Number of students in CS: ${value.csStudents.length}. List: ${value.csStudents.join(', ')}\n`);
         response.end(`Number of students in SWE: ${value.sweStudents.length}. List: ${value.sweStudents.join(', ')}`);
       })
-      .catch(() => {
-        response.status(500).send('Cannot load the database');
+      .catch((err) => {
+        // response.status(500).send('Cannot load the database');
+        response.statusCode = 404;
+        response.statusMessage = err.message;
+        response.write('This is the list of our students\n');
+        response.end(`${err.message}`);
       });
   }
 
@@ -25,8 +29,12 @@ class StudentsController {
           response.end(`List: ${value.sweStudents.join(', ')}`);
         }
       })
-      .catch(() => {
-        response.status(500).send('Major parameter must be CS or SWE');
+      .catch((err) => {
+        // response.status(500).send('Major parameter must be CS or SWE');
+        response.statusCode = 404;
+        response.statusMessage = err.message;
+        response.write('This is the list of our students\n');
+        response.end(`${err.message}`);
       });
   }
 }
