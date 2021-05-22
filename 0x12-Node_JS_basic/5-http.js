@@ -11,17 +11,18 @@ const app = http.createServer((req, res) => {
   const fileName = process.argv[2];
   if (url === '/') { res.end('Hello Holberton School!'); }
   if (url === '/students') {
-    countStudents(fileName).then((value) => {
-      res.write('This is the list of our students\n');
-      res.write(`Number of students: ${value.students.length}\n`);
-      res.write(`Number of students in CS: ${value.csStudents.length}. List: ${value.csStudents.join(', ')}\n`);
-      res.end(`Number of students in SWE: ${value.sweStudents.length}. List: ${value.sweStudents.join(', ')}`);
-    }).catch((err) => {
-      res.statusCode = 404;
-      res.statusMessage = err.message;
-      res.write('This is the list of our students\n');
-      res.end(`${err.message}`);
-    });
+    countStudents(fileName)
+      .then((data) => {
+        res.write('This is the list of our students\n');
+        res.write(`Number of students: ${data.students.length}\n`);
+        res.write(`Number of students in CS: ${data.csStudents.length}. List: ${data.csStudents.join(', ')}\n`);
+        res.end(`Number of students in SWE: ${data.sweStudents.length}. List: ${data.sweStudents.join(', ')}`);
+      })
+      .catch((err) => {
+        res.statusCode = 404;
+        res.statusMessage = err.message;
+        res.end(`This is the list of our students\n${err.message}`);
+      });
   }
 });
 
