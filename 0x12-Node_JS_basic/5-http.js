@@ -12,7 +12,7 @@ const app = http.createServer(async (req, res) => {
       res.write(`Number of students: ${value.students.length}\n`);
       res.write(`Number of students in CS: ${value.csStudents.length}. List: ${value.csStudents.join(', ')}\n`);
       res.write(`Number of students in SWE: ${value.sweStudents.length}. List: ${value.sweStudents.join(', ')}`);
-      res.end();
+      res.send();
     }).catch((err) => res.end(err.message));
   }
 });
