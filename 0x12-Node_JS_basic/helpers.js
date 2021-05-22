@@ -4,7 +4,7 @@ function writeIndex(res) {
   res.end('Hello Holberton School!');
 }
 
-function writeres(res, data, showTotal) {
+function writeResponse(res, data, showTotal) {
   res.statusCode = 200;
   res.setHeader('Content-Type', 'text/plain');
   res.write('This is the list of our students\n');
@@ -29,6 +29,6 @@ function writeMajorList(res, data, major) {
 }
 
 module.exports.writeIndex = writeIndex;
-module.exports.writeres = writeres;
+module.exports.writeResponse = writeResponse;
 module.exports.writeError = writeError;
 module.exports.writeMajorList = writeMajorList;
