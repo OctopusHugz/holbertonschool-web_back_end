@@ -2,9 +2,9 @@ const http = require('http');
 const countStudents = require('./3-read_file_async');
 const helpers = require('./helpers');
 
-const { writeResponse } = helpers;
-const { writeError } = helpers;
-const { writeIndex } = helpers;
+const { writeResponse, writeError, writeIndex } = helpers;
+// const { writeError } = helpers;
+// const { writeIndex } = helpers;
 
 const hostname = '127.0.0.1';
 const port = 1245;
