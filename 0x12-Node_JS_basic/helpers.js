@@ -4,7 +4,7 @@ function writeIndex(res) {
   res.end('Hello Holberton School!');
 }
 
-function writeResponse(res, data, showTotal) {
+function writeres(res, data, showTotal) {
   res.statusCode = 200;
   res.setHeader('Content-Type', 'text/plain');
   res.write('This is the list of our students\n');
@@ -21,6 +21,14 @@ function writeError(res, err) {
   res.end(`This is the list of our students\n${err.message}`);
 }
 
+function writeMajorList(res, data, major) {
+  res.statusCode = 200;
+  if (major === 'CS') { res.end(`List: ${data.csStudents.join(', ')}`); } else {
+    res.end(`List: ${data.sweStudents.join(', ')}`);
+  }
+}
+
 module.exports.writeIndex = writeIndex;
-module.exports.writeResponse = writeResponse;
+module.exports.writeres = writeres;
 module.exports.writeError = writeError;
+module.exports.writeMajorList = writeMajorList;
