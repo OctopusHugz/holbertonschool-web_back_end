@@ -1,19 +1,31 @@
 const { expect } = require("chai");
 const request = require('request')
 
-describe('Index page', () => {
-	it('checks output of curling server for index page with valid cart number', (done) => {
-		request('http://localhost:7865/cart/12', (error, response, body) => {
+describe('Login page', () => {
+	it('checks output of curling login page with userName data', (done) => {
+		const options = {
+			url: 'http://localhost:7865/login',
+			method: 'POST',
+			json: { 'userName': 'Betty' }
+		}
+		request(options, (error, response, body) => {
 			expect(response.statusCode).to.equal(200)
-			expect(response.body).to.equal('Payment methods for cart 12\n')
+			expect(response.body).to.equal('Welcome: Betty')
 		}, done())
 	})
-	it('checks output of curling server for index page with invalid cart number', (done) => {
-		request('http://localhost:7865/cart/hello', (error, response, body) => {
-			if (response) {
-				expect(response.statusCode).to.equal(404)
-				expect(response.body).to.equal('')
-			}
+})
+
+
+describe('Available payments page', () => {
+	it('checks output of curling available_payments page', (done) => {
+		request('http://localhost:7865/available_payments', (error, response, body) => {
+			expect(response.statusCode).to.equal(200)
+			expect(response.body).to.deep.equal(JSON.stringify({
+				payment_methods: {
+					credit_cards: true,
+					paypal: false
+				}
+			}))
 		}, done())
 	})
 })
