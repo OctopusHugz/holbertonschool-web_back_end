@@ -5,3 +5,5 @@ function sendPaymentRequestToApi(totalAmount, totalShipping) {
 	const finalTotal = calculateNumber('SUM', totalAmount, totalShipping)
 	console.log(`The total is: ${finalTotal}`)
 }
+
+module.exports = sendPaymentRequestToApi;
