@@ -1,14 +1,15 @@
 const { expect } = require("chai");
 const sinon = require("sinon");
 
+const Utils = require('./utils')
 const sendPaymentRequestToApi = require("./3-payment");
 
 describe('sendPaymentRequestToApi', () => {
 	it('validates usage of Utils.calculateNumber', () => {
-		let consoleSpy = sinon.spy(console, 'log')
+		let calcNumSpy = sinon.spy(Utils, 'calculateNumber')
 		sendPaymentRequestToApi(100, 20)
 
-		expect(consoleSpy.calledWith('The total is: 120')).to.be.true
-		consoleSpy.restore()
+		expect(calcNumSpy.calledWith('SUM', 100, 20)).to.be.true
+		calcNumSpy.restore()
 	})
 })
