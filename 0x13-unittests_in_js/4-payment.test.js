@@ -4,8 +4,8 @@ const sinon = require("sinon");
 const Utils = require('./utils')
 const sendPaymentRequestToApi = require("./3-payment");
 
-describe('sendPaymentRequestToApi', function () {
-	it('validates usage of Utils.calculateNumber', function () {
+describe('sendPaymentRequestToApi', () => {
+	it('validates usage of Utils.calculateNumber', () => {
 		const calcNumStub = sinon.stub(Utils, 'calculateNumber').returns(10)
 		const consoleSpy = sinon.spy(console, 'log')
 
