@@ -1,11 +1,6 @@
 const { expect } = require("chai");
 const request = require('request')
 
-
-
-const { expect } = require("chai");
-const request = require('request')
-
 describe('Index page', () => {
 	describe('GET /', () => {
 		it('checks output of GET /', (done) => {
@@ -50,7 +45,7 @@ describe('Login page', () => {
 			}
 			request(options, (error, response, body) => {
 				expect(response.statusCode).to.equal(200)
-				expect(body).to.equal('Welcome: Betty')
+				expect(body).to.equal('Welcome Betty')
 			}, done())
 		})
 	})
