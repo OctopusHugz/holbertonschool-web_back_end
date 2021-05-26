@@ -8,7 +8,7 @@ app.use(express.json());
 app.get('/', (req, res) => res.end('Welcome to the payment system'))
 app.get('/cart/:id', (req, res) => {
 	const idArray = req.params.id.match(/(\d+)/);
-	if (idArray) res.end(`Payment methods for cart ${idArray[0]}\n`)
+	if (idArray) res.end(`Payment methods for cart ${idArray[0]}`)
 	else res.status(404).end()
 })
 app.get('/available_payments', (req, res) => {
@@ -19,4 +19,4 @@ app.get('/available_payments', (req, res) => {
 		}
 	})
 })
-app.post('/login', (req, res) => res.end(`Welcome: ${req.body.userName}`))
+app.post('/login', (req, res) => res.end(`Welcome ${req.body.userName}`))
