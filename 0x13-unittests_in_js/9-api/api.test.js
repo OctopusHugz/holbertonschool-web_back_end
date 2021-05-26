@@ -5,7 +5,7 @@ describe('Index page', () => {
 	it('checks output of curling server for index page with valid cart number', (done) => {
 		request('http://localhost:7865/cart/12', (error, response, body) => {
 			expect(response.statusCode).to.equal(200)
-			expect(response.body).to.equal('Payment methods for cart 12\n')
+			expect(body).to.equal('Payment methods for cart 12')
 		}, done())
 	})
 	it('checks output of curling server for index page with invalid cart number', (done) => {
