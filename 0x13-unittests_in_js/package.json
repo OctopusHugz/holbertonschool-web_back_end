@@ -13,7 +13,7 @@
     "sinon": "^11.1.0"
   },
   "scripts": {
-    "test": "mocha --require @babel/register"
+    "test": "mocha"
   },
   "author": "Colson Scott",
   "license": "ISC"
