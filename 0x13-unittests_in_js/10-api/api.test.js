@@ -32,9 +32,6 @@ describe('Index page', () => {
 	})
 })
 
-
-
-
 describe('Login page', () => {
 	describe('GET /login', () => {
 		it('checks output of curling login page with userName data', (done) => {
