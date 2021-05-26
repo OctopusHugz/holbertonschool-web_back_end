@@ -1,4 +1,4 @@
-export default function calculateNumber(type, a, b) {
+function calculateNumber(type, a, b) {
 	if (['SUM', 'SUBTRACT', 'DIVIDE'].indexOf(type) !== -1) {
 		if (type === 'SUM') return Math.round(a) + Math.round(b)
 		else if (type === 'SUBTRACT') return Math.round(a) - Math.round(b)
@@ -6,3 +6,5 @@ export default function calculateNumber(type, a, b) {
 		return Math.round(a) / Math.round(b)
 	} else throw new TypeError('Type must be SUM, SUBTRACT, or DIVIDE')
 }
+
+module.exports = calculateNumber
