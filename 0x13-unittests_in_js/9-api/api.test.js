@@ -20,7 +20,7 @@ describe('Index page', () => {
 		})
 	})
 
-	describe('GET /cart/hello', () => {
+	describe('GET /cart/:id with id = hello', () => {
 		it('checks output of curling server for index page with invalid cart number', (done) => {
 			request('http://localhost:7865/cart/hello', (error, response, body) => {
 				if (response) {
