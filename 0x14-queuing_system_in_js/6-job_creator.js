@@ -6,7 +6,7 @@ const jobObj = {
 }
 const job = queue.create('push_notification_code', jobObj).save()
 
-job.on('enqueue', (id, type) => console.log(`Notification job created: ${job.id}`))
+job.on('enqueue', () => console.log(`Notification job created: ${job.id}`))
 	.on('complete', () => console.log('Notification job completed'))
 	.on('failed', () => console.log('Notification job failed'))
 	// or job.on('failed attempt')?
