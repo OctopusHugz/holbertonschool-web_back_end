@@ -50,7 +50,7 @@ const jobs = [
 jobs.forEach((obj) => {
 	const newJob = queue.create('push_notification_code_2', obj).save()
 	newJob
-		.on('enqueue', (id, type) => console.log(`Notification job created: ${newJob.id}`))
+		.on('enqueue', () => console.log(`Notification job created: ${newJob.id}`))
 		.on('complete', () => console.log(`Notification job ${newJob.id} completed`))
 		.on('failed', (errorMessage) => console.log(`Notification job ${newJob.id} failed: ${errorMessage}`))
 		.on('progress', (progress, data) => console.log(`Notification job ${newJob.id} ${progress}% complete`))
