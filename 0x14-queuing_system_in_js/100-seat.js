@@ -28,7 +28,10 @@ app.get('/available_seats', async (req, res) => {
 	res.json({ numberOfAvailableSeats: seats })
 })
 app.get('/reserve_seat', (req, res) => {
-	if (!reservationEnabled) res.json({ status: 'Reservation are blocked' })
+	if (!reservationEnabled) {
+		res.json({ status: 'Reservation are blocked' })
+		return
+	}
 	const newJob = queue.create('reserve_seat', {}).save((err) => {
 		if (err) res.json({ status: 'Reservation failed' })
 		res.json({ status: 'Reservation in process' })
@@ -37,22 +40,13 @@ app.get('/reserve_seat', (req, res) => {
 		.on('complete', () => console.log(`Seat reservation job ${newJob.id} completed`))
 		.on('failed', (errorMessage) => console.log(`Seat reservation job ${newJob.id} failed: ${errorMessage}`))
 })
-
-
-
-
-
-
-
-
-
-
-
-
-
-// Requirements:
-// Make sure to use promisify with Redis
-// Make sure to use the await/async keyword to get the value from Redis
-// Make sure the format returned by the web application is always JSON and not text
-// Make sure that only the allowed amount of seats can be reserved
-// Make sure that the main route is displaying the right number of seats
+app.get('/process', (req, res) => {
+	queue.process('reserve_seat', async (job, done) => {
+		const seatCount = await getCurrentAvailableSeats()
+		if (seatCount > 0) reserveSeat(seatCount - 1)
+		if ((seatCount - 1) === 0) reservationEnabled = false
+		if ((seatCount - 1) >= 0) done()
+		else return done(new Error('Not enough seats available'))
+	})
+	res.json({ status: 'Queue processing' })
+})
