@@ -25,7 +25,7 @@ app.get('/list_products/:itemId', async (req, res) => {
 	const rObj = getItemById(parseInt(itemId))
 	if (!rObj) res.json({ status: 'Product not found' })
 	const currentStock = await getCurrentReservedStockById(itemId)
-	if (!currentStock) {
+	if (currentStock === null) {
 		await reserveStockById(itemId, rObj.initialAvailableQuantity)
 		rObj.currentQuantity = rObj.initialAvailableQuantity
 	}
