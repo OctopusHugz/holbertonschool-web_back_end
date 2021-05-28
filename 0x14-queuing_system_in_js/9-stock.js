@@ -7,6 +7,7 @@ const client = redis.createClient()
 
 const promisifiedSet = promisify(client.set).bind(client)
 const asyncGet = promisify(client.get).bind(client)
+const getItemById = (id) => listProducts.filter((product) => product.itemId === id)[0]
 
 const listProducts = [
 	{ itemId: 1, name: 'Suitcase 250', price: 50, initialAvailableQuantity: 4 },
@@ -16,8 +17,6 @@ const listProducts = [
 ]
 const port = 1245
 
-// The .filter() below will fail accessing [0] if no product in listProducts has that id
-const getItemById = (id) => listProducts.filter((product) => product.itemId === id)[0]
 
 app.listen(port, console.log(`Stock app listening at http://localhost:${port}`))
 app.get('/list_products', (req, res) => res.json(listProducts))
@@ -30,11 +29,21 @@ app.get('/list_products/:itemId', async (req, res) => {
 		await reserveStockById(itemId, rObj.initialAvailableQuantity)
 		rObj.currentQuantity = rObj.initialAvailableQuantity
 	}
-	else {
-		await reserveStockById(itemId, currentStock - 1)
-		rObj.currentQuantity = currentStock - 1
-	}
+	else rObj.currentQuantity = currentStock
 	res.json(rObj)
+})
+app.get('/reserve_product/:itemId', async (req, res) => {
+	const itemId = req.params.itemId
+	const rObj = getItemById(parseInt(itemId))
+	if (!rObj) res.json({ status: 'Product not found' })
+	const currentStock = await getCurrentReservedStockById(itemId)
+	if (currentStock === null) {
+		await reserveStockById(itemId, rObj.initialAvailableQuantity - 1)
+		res.json({ status: 'Reservation confirmed', itemId })
+	} else if (currentStock > 0) {
+		await reserveStockById(itemId, currentStock - 1)
+		res.json({ status: 'Reservation confirmed', itemId })
+	} else res.json({ status: 'Not enough stock available', itemId })
 })
 
 client.on('error', (error) => console.error(`Redis client not connected to the server: ${error.message}`))
