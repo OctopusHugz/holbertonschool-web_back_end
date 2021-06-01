@@ -25,9 +25,7 @@ describe('Index page', () => {
 	describe('GET /cart/hello', () => {
 		it('checks output of curling server for index page with invalid cart number', (done) => {
 			request('http://localhost:7865/cart/hello', (error, response, body) => {
-				if (response) {
-					expect(response.statusCode).to.equal(404)
-				}
+				if (response) expect(response.statusCode).to.equal(404)
 				done()
 			})
 		})
