@@ -27,7 +27,6 @@ describe('Index page', () => {
 			request('http://localhost:7865/cart/hello', (error, response, body) => {
 				if (response) {
 					expect(response.statusCode).to.equal(404)
-					expect(body).to.equal('')
 				}
 				done()
 			})
